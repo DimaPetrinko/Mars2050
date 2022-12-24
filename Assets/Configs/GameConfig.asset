@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2699639c004361a3c6334c30448fa8, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: 11400000, guid: 5ee6bf341ad47e196b4d99565e2e1ea2, type: 2}
+  m_BuildingConfigs: {fileID: 11400000, guid: dee1ef9e8d3c16524acf5aa6323e489f, type: 2}
+  m_BoardRadius: 4
+  m_UnitsPerPlayer: 4
+  m_MaxRoll: 6
+  m_MaxResources: 10
+  m_MaxUnitHealth: 3
+  m_MaxBuildingHealth: 4
+  m_MaxBuildingWithUnitHealth: 6
+  m_WinConfigurations:
+  - PlayersCount: 2
+    BuildingsToWin: 8
+  - PlayersCount: 3
+    BuildingsToWin: 6
+  - PlayersCount: 4
+    BuildingsToWin: 6
+  - PlayersCount: 5
+    BuildingsToWin: 4
+  - PlayersCount: 6
+    BuildingsToWin: 4
+  m_StartingConfigurations:
+  - StartingPosition:
+    - {x: -1, y: 0, z: 0}
+    - {x: 1, y: 0, z: 0}
+  - StartingPosition:
+    - {x: 0, y: 1, z: 0}
+    - {x: 0, y: 0, z: -1}
+    - {x: 1, y: 0, z: 0}
+  - StartingPosition:
+    - {x: 0, y: 1, z: 0}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: -1, z: 0}
+    - {x: 0, y: 0, z: -1}
+  - StartingPosition:
+    - {x: -1, y: 0, z: 0}
+    - {x: 0, y: 1, z: 0}
+    - {x: 0, y: 0, z: 1}
+    - {x: 1, y: 0, z: 0}
+    - {x: 0, y: -1, z: 0}
+  - StartingPosition:
+    - {x: 1, y: 0, z: 0}
+    - {x: 0, y: 1, z: 0}
+    - {x: 0, y: 0, z: 1}
+    - {x: -1, y: 0, z: 0}
+    - {x: 0, y: -1, z: 0}
+    - {x: 0, y: 0, z: -1}
