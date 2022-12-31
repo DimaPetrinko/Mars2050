@@ -15,7 +15,7 @@ namespace Core.Configs
 		[Serializable]
 		public struct StartingConfiguration
 		{
-			public Vector3Int[] StartingPosition;
+			public Vector2Int[] StartingPosition;
 		}
 
 		[Serializable]
@@ -52,11 +52,11 @@ namespace Core.Configs
 			return m_WinConfigurations.FirstOrDefault(c => c.PlayersCount == playersCount).BuildingsToWin;
 		}
 
-		public Vector3Int GetStartingConfiguration(int playersCount, int playerIndex)
+		public Vector2Int GetStartingConfiguration(int playersCount, int playerIndex)
 		{
 			return m_StartingConfigurations
 				.FirstOrDefault(c => c.StartingPosition.Length == playersCount)
-				.StartingPosition[playerIndex];
+				.StartingPosition[playerIndex] * (m_BoardRadius - 1);
 		}
 	}
 }

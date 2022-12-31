@@ -17,6 +17,6 @@ namespace Core.Configs.Interfaces
 		int MaxBuildingWithUnitHealth { get; }
 
 		int GetBuildingsToWin(int playersCount);
-		Vector3Int GetStartingConfiguration(int playersCount, int playerIndex);
+		Vector2Int GetStartingConfiguration(int playersCount, int playerIndex);
 	}
 }

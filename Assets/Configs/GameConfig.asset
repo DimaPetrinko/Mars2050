@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: 11400000, guid: 5ee6bf341ad47e196b4d99565e2e1ea2, type: 2}
   m_BuildingConfigs: {fileID: 11400000, guid: dee1ef9e8d3c16524acf5aa6323e489f, type: 2}
-  m_BoardRadius: 4
+  m_BoardRadius: 5
   m_UnitsPerPlayer: 4
   m_MaxRoll: 6
   m_MaxResources: 10
@@ -34,27 +34,27 @@ MonoBehaviour:
     BuildingsToWin: 4
   m_StartingConfigurations:
   - StartingPosition:
-    - {x: -1, y: 0, z: 0}
-    - {x: 1, y: 0, z: 0}
+    - {x: -1, y: 1}
+    - {x: 1, y: -1}
   - StartingPosition:
-    - {x: 0, y: 1, z: 0}
-    - {x: 0, y: 0, z: -1}
-    - {x: 1, y: 0, z: 0}
+    - {x: 1, y: -1}
+    - {x: -1, y: 0}
+    - {x: 0, y: 1}
   - StartingPosition:
-    - {x: 0, y: 1, z: 0}
-    - {x: 0, y: 0, z: 1}
-    - {x: 0, y: -1, z: 0}
-    - {x: 0, y: 0, z: -1}
+    - {x: -1, y: 1}
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
+    - {x: 1, y: -1}
   - StartingPosition:
-    - {x: -1, y: 0, z: 0}
-    - {x: 0, y: 1, z: 0}
-    - {x: 0, y: 0, z: 1}
-    - {x: 1, y: 0, z: 0}
-    - {x: 0, y: -1, z: 0}
+    - {x: -1, y: 1}
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
+    - {x: 1, y: 0}
+    - {x: 1, y: -1}
   - StartingPosition:
-    - {x: 1, y: 0, z: 0}
-    - {x: 0, y: 1, z: 0}
-    - {x: 0, y: 0, z: 1}
-    - {x: -1, y: 0, z: 0}
-    - {x: 0, y: -1, z: 0}
-    - {x: 0, y: 0, z: -1}
+    - {x: 0, y: -1}
+    - {x: 1, y: -1}
+    - {x: 1, y: 0}
+    - {x: 0, y: 1}
+    - {x: -1, y: 1}
+    - {x: -1, y: 0}

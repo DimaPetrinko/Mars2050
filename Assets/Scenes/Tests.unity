@@ -355,4 +355,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BoardPrefab: {fileID: 4373531005598895815, guid: 8050bc618df64be03941bacd6eef5365, type: 3}
   m_ResourcePrefab: {fileID: 1253644142306008839, guid: 8e3f8a6359358415a856e74f8011efa9, type: 3}
+  m_BaseBuildingPrefab: {fileID: 0}
+  m_GameConfig: {fileID: 11400000, guid: dac52d4b6a77fcc3a8d78c031a2d01b5, type: 2}
   m_BoardRadius: 5
