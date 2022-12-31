@@ -1,6 +1,6 @@
 using System;
 
-namespace Utils
+namespace Core.Utils
 {
 	[Serializable]
 	public struct IntRange
