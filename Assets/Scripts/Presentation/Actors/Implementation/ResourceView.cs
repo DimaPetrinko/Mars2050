@@ -2,26 +2,21 @@ using System;
 using Core.Models.Enums;
 using UnityEngine;
 
-namespace Presentation.Boards.Implementation
+namespace Presentation.Actors.Implementation
 {
-	[Serializable]
-	internal struct IconData
-	{
-		public GameObject Object;
-		public ResourceType Type;
-	}
-
 	internal class ResourceView : MonoBehaviour, IResourceView
 	{
+		public event Action<bool> Discovered;
+
 		[SerializeField] private GameObject m_IconsParent;
-		[SerializeField] private IconData[] m_Icons;
+		[SerializeField] private Pair<ResourceType>[] m_Icons;
+		[SerializeField] private bool m_IsDiscovered;
+
+		private bool mLastDiscovered;
 
 		public bool IsDiscovered
 		{
-			set
-			{
-				m_IconsParent.SetActive(false);
-			}
+			set => m_IconsParent.SetActive(value);
 		}
 
 		public ResourceType Type
@@ -44,6 +39,12 @@ namespace Presentation.Boards.Implementation
 				}
 				else gameObject.SetActive(false);
 			}
+		}
+
+		private void Update()
+		{
+			if (m_IsDiscovered != mLastDiscovered) Discovered?.Invoke(m_IsDiscovered);
+			mLastDiscovered = m_IsDiscovered;
 		}
 	}
 }

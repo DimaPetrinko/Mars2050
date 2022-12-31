@@ -1,7 +1,8 @@
 using Core.Models.Actors;
 using Core.Models.Boards;
+using Presentation.Boards;
 
-namespace Presentation.Boards.Implementation
+namespace Presentation.Actors.Implementation
 {
 	internal class ResourcePresenter : IResourcePresenter
 	{
@@ -18,10 +19,12 @@ namespace Presentation.Boards.Implementation
 
 			Model.CellChanged += OnCellChanged;
 			Model.IsDiscoveredChanged += OnIsDiscoveredChanged;
+			View.Discovered += OnDiscovered;
 		}
 
 		public void Initialize()
 		{
+			View.IsDiscovered = Model.IsDiscovered;
 			View.Type = Model.Type;
 			View.Cell = null;
 		}
@@ -29,6 +32,11 @@ namespace Presentation.Boards.Implementation
 		private void OnCellChanged(ICell cell)
 		{
 			View.Cell = cell != null ? mBoardPresenter.GetCellObject(cell.Position) : null;
+		}
+
+		private void OnDiscovered(bool value)
+		{
+			Model.IsDiscovered = value;
 		}
 
 		private void OnIsDiscoveredChanged()

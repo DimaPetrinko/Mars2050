@@ -1,6 +1,6 @@
 using Core.Models.Actors;
 
-namespace Presentation.Boards
+namespace Presentation.Actors
 {
 	internal interface IResourcePresenter : IPresenter<IResource, IResourceView>
 	{
