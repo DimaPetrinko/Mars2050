@@ -9,6 +9,6 @@ namespace Core.Models.Boards
 		IEnumerable<ICell> Cells { get; }
 		ICell GetCell(Vector2Int position);
 		bool TryGetCell(out ICell cell, Vector2Int position);
-		bool InRange(Vector2Int position, int range);
+		IEnumerable<ICell> GetCellNeighbors(ICell cell);
 	}
 }

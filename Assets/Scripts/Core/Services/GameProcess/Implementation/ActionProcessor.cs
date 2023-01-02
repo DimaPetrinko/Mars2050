@@ -45,7 +45,7 @@ namespace Core.Services.GameProcess.Implementation
 			if (!from.TryGetActor(out IUnit movable, performer.Faction)) return ActionResult.NoUnitOfCorrectFactionInCell;
 			if (!config.CanMoveToOccupiedCell && to.HasPlaceable<IMovable>()) return ActionResult.CellIsOccupied;
 			if (!config.CanMoveToDamagedBuilding && to.TryGetPlaceable(out IBuilding building) &&
-			    building.Health < building.MaxHealth)
+			    building.Health.Value < building.MaxHealth.Value)
 				return ActionResult.CellHasDamagedBuilding;
 			if ((from.Position - to.Position).magnitude > config.MoveRange) return ActionResult.ExceedsRange;
 
@@ -62,11 +62,11 @@ namespace Core.Services.GameProcess.Implementation
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
 			if (!cell.HasActor<IUnit>(performer.Faction)) return ActionResult.NoUnitOfCorrectFactionInCell;
 			if (!cell.TryGetPlaceable(out IResource resource)) return ActionResult.NoResourceInCell;
-			if (resource.IsDiscovered) return ActionResult.ResourceAlreadyDiscovered;
+			if (resource.IsDiscovered.Value) return ActionResult.ResourceAlreadyDiscovered;
 
 			return ApplyAction(performer, config, () =>
 			{
-				resource.IsDiscovered = true;
+				resource.IsDiscovered.Value = true;
 			});
 		}
 
@@ -78,7 +78,7 @@ namespace Core.Services.GameProcess.Implementation
 			var resourcesToGather = cells
 				.Where(c => c.HasPlaceable<IResource>() && c.HasActor<IResourceGatherer>(performer.Faction))
 				.Select(c => c.GetPlaceable<IResource>())
-				.Where(r => r.IsDiscovered)
+				.Where(r => r.IsDiscovered.Value)
 				.Where(r => resources.Contains(r.Type))
 				.Select(r => r.Type)
 				.ToArray();

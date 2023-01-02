@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Core.Utils;
 using UnityEngine;
 
@@ -21,8 +22,9 @@ namespace Core.Models.Boards.Implementation
 			{
 				for (var y = -offset; y <= offset; y++)
 				{
-					if (!IsValidIndex(x, y)) continue;
-					mCells[x + offset, y + offset] = new Cell(x, y);
+					var position = new Vector2Int(x, y);
+					if (!IsValidIndex(position)) continue;
+					mCells[x + offset, y + offset] = new Cell(position);
 				}
 			}
 		}
@@ -45,29 +47,14 @@ namespace Core.Models.Boards.Implementation
 			return cell != null;
 		}
 
-		public bool InRange(Vector2Int position, int range)
+		public IEnumerable<ICell> GetCellNeighbors(ICell cell)
 		{
-			return InRange(position.x, position.y, range);
+			return Cells.Where(c => c != cell && (c.Position - cell.Position).InRange(1));
 		}
 
 		private bool IsValidIndex(Vector2Int position)
 		{
-			return IsValidIndex(position.x, position.y);
-		}
-		private bool IsValidIndex(int x, int y)
-		{
-			return InRange(x, y, Radius);
-		}
-
-		private bool InRange(int x, int y, int range)
-		{
-			return Magnitude(x, y) < range;
-		}
-
-		private int Magnitude(int x, int y)
-		{
-			var z = -x - y;
-			return Mathf.Max(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z));
+			return position.InRange(Radius - 1);
 		}
 	}
 }

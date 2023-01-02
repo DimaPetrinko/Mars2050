@@ -1,6 +1,7 @@
 using System.Linq;
 using Core.Models.Boards;
 using Core.Models.Boards.Implementation;
+using Core.Utils;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -144,15 +145,30 @@ namespace Tests
 		}
 
 		[Test]
-		public void InRange_ReturnsTrue_WhenCorrectPositionGiven()
+		public void GetCellNeighbors_Return6Cells_WhenAllFitBoard()
 		{
-			Assert.IsTrue(mBoard.InRange(new Vector2Int(4, 0), 6));
+			var cell = mBoard.GetCell(new Vector2Int(-1, 1));
+			var neighbors = mBoard.GetCellNeighbors(cell).ToArray();
+
+			Assert.AreEqual(6, neighbors.Length);
 		}
 
 		[Test]
-		public void InRange_ReturnsFalse_WhenIncorrectPositionGiven()
+		public void GetCellNeighbors_ReturnLessThan6Cells_WhenSomeDontFitBoard()
 		{
-			Assert.IsFalse(mBoard.InRange(new Vector2Int(4, 0), 2));
+			var cell = mBoard.GetCell(new Vector2Int(-4, 1));
+			var neighbors = mBoard.GetCellNeighbors(cell).ToArray();
+
+			Assert.AreNotEqual(6, neighbors.Length);
+		}
+
+		[Test]
+		public void GetCellNeighbors_AllCellsAreInRangeOf1()
+		{
+			var cell = mBoard.GetCell(new Vector2Int(-1, 1));
+			var neighbors = mBoard.GetCellNeighbors(cell);
+
+			Assert.IsTrue(neighbors.All(c => (c.Position - cell.Position).InRange(1)));
 		}
 	}
 }

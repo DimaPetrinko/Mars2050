@@ -6,8 +6,8 @@ namespace Core.Models.Actors
 	{
 		event Action Died;
 
-		int Health { get; set; }
-		int MaxHealth { get; set; }
+		IReactiveProperty<int> Health { get; }
+		IReactiveProperty<int> MaxHealth { get; }
 		void Damage(int damage);
 		void Heal(int amount);
 	}

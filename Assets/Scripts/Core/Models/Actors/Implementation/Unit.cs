@@ -28,35 +28,23 @@ namespace Core.Models.Actors.Implementation
 	public class Unit : IUnit
 	{
 		public event Action<ICell> CellChanged;
-		public event Action Died;
-
-		private int mHealth;
-
-		public Faction Faction { get; }
-
-		public int Health
+		public void ChangeCell(ICell cell)
 		{
-			get => mHealth;
-			set => mHealth = Mathf.Clamp(value, 0, MaxHealth);
+			throw new NotImplementedException();
 		}
 
-		public int MaxHealth { get; set; }
-
+		public Faction Faction { get; }
+		public event Action Died;
+		public IReactiveProperty<int> Health { get; }
+		public IReactiveProperty<int> MaxHealth { get; }
 		public void Damage(int damage)
 		{
-			Health -= damage;
-			if (Health == 0)
-				Died?.Invoke();
+			throw new NotImplementedException();
 		}
 
 		public void Heal(int amount)
 		{
-			Health += amount;
-		}
-
-		public void ChangeCell(ICell cell)
-		{
-			CellChanged?.Invoke(cell);
+			throw new NotImplementedException();
 		}
 	}
 }
