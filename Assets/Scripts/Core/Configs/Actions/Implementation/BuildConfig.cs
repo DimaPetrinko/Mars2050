@@ -1,10 +1,9 @@
 using Core.Configs.Actions.Enums;
-using Core.Configs.Actions.Interfaces;
 using Core.Configs.Buildings;
-using Core.Configs.Buildings.Interfaces;
+using Core.Configs.Buildings.Implementation;
 using UnityEngine;
 
-namespace Core.Configs.Actions
+namespace Core.Configs.Actions.Implementation
 {
 	[CreateAssetMenu(fileName = nameof(BuildConfig), menuName = "Configs/Actions/" + nameof(BuildConfig))]
 	public class BuildConfig : ActionConfig, IBuildConfig

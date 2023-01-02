@@ -1,8 +1,8 @@
-using Core.Configs.Actions.Interfaces;
-using Core.Configs.Buildings.Interfaces;
+using Core.Configs.Actions;
+using Core.Configs.Buildings;
 using UnityEngine;
 
-namespace Core.Configs.Interfaces
+namespace Core.Configs
 {
 	public interface IGameConfig
 	{

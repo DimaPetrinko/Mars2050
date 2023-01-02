@@ -1,6 +1,6 @@
 using Core.Models.Enums;
 
-namespace Core.Configs.Buildings.Interfaces
+namespace Core.Configs.Buildings
 {
 	public interface IBuildingConfigs
 	{

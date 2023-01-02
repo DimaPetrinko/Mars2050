@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Configs;
+using Core.Configs.Implementation;
 using Core.Models.Actors;
 using Core.Models.Actors.Implementation;
 using Core.Models.Boards;

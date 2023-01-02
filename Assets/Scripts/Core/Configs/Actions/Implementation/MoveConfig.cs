@@ -1,8 +1,7 @@
 using Core.Configs.Actions.Enums;
-using Core.Configs.Actions.Interfaces;
 using UnityEngine;
 
-namespace Core.Configs.Actions
+namespace Core.Configs.Actions.Implementation
 {
 	[CreateAssetMenu(fileName = nameof(MoveConfig), menuName = "Configs/Actions/" + nameof(MoveConfig))]
 	public class MoveConfig : ActionConfig, IMoveConfig

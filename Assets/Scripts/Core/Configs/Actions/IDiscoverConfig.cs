@@ -1,4 +1,4 @@
-namespace Core.Configs.Actions.Interfaces
+namespace Core.Configs.Actions
 {
 	public interface IDiscoverConfig : IActionConfig
 	{

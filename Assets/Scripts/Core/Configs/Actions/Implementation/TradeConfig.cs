@@ -1,8 +1,7 @@
 using Core.Configs.Actions.Enums;
-using Core.Configs.Actions.Interfaces;
 using UnityEngine;
 
-namespace Core.Configs.Actions
+namespace Core.Configs.Actions.Implementation
 {
 	[CreateAssetMenu(fileName = nameof(TradeConfig), menuName = "Configs/Actions/" + nameof(TradeConfig))]
 	public class TradeConfig : ActionConfig, ITradeConfig

@@ -1,8 +1,7 @@
 using Core.Configs.Actions.Enums;
-using Core.Configs.Actions.Interfaces;
 using UnityEngine;
 
-namespace Core.Configs.Actions
+namespace Core.Configs.Actions.Implementation
 {
 	[CreateAssetMenu(fileName = nameof(HealConfig), menuName = "Configs/Actions/" + nameof(HealConfig))]
 	public class HealConfig : ActionConfig, IHealConfig

@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
 using Core.Configs.Actions.Enums;
-using Core.Configs.Actions.Interfaces;
 using Core.Models.Enums;
 using Core.Utils;
 using UnityEngine;
 
-namespace Core.Configs.Actions
+namespace Core.Configs.Actions.Implementation
 {
 	[CreateAssetMenu(fileName = nameof(GatherConfig), menuName = "Configs/Actions/" + nameof(GatherConfig))]
 	public class GatherConfig : ActionConfig, IGatherConfig

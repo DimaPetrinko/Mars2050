@@ -1,6 +1,6 @@
-using Core.Configs.Buildings.Interfaces;
+using Core.Configs.Buildings;
 
-namespace Core.Configs.Actions.Interfaces
+namespace Core.Configs.Actions
 {
 	public interface IBuildConfig : IActionConfig
 	{

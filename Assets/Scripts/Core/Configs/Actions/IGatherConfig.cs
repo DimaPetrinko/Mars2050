@@ -1,6 +1,6 @@
 using Core.Models.Enums;
 
-namespace Core.Configs.Actions.Interfaces
+namespace Core.Configs.Actions
 {
 	public interface IGatherConfig : IActionConfig
 	{

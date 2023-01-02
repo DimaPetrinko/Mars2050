@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
 using Core.Configs.Actions;
-using Core.Configs.Actions.Interfaces;
+using Core.Configs.Actions.Implementation;
 using Core.Configs.Buildings;
-using Core.Configs.Buildings.Interfaces;
-using Core.Configs.Interfaces;
+using Core.Configs.Buildings.Implementation;
 using UnityEngine;
 
-namespace Core.Configs
+namespace Core.Configs.Implementation
 {
 	[CreateAssetMenu(fileName = nameof(GameConfig), menuName = "Configs/" + nameof(GameConfig))]
 	public class GameConfig : ScriptableObject, IGameConfig

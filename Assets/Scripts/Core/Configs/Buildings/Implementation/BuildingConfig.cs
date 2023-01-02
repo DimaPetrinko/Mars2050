@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using Core.Configs.Actions;
-using Core.Configs.Buildings.Interfaces;
 using Core.Models.Enums;
 using UnityEngine;
 
-namespace Core.Configs.Buildings
+namespace Core.Configs.Buildings.Implementation
 {
 	[CreateAssetMenu(fileName = nameof(BuildingConfig), menuName = "Configs/Buildings/" + nameof(BuildingConfig))]
 	public class BuildingConfig : ScriptableObject, IBuildingConfig
