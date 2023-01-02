@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Presentation.Actors.Implementation
 {
-	internal class BaseBuildingPresenter : IBaseBBuildingPresenter
+	internal class BaseBuildingPresenter : IBaseBuildingPresenter
 	{
 		private readonly IBoardPresenter mBoardPresenter;
 
@@ -28,8 +28,8 @@ namespace Presentation.Actors.Implementation
 
 		private void OnCellChanged(ICell cell)
 		{
-			View.Cell = mBoardPresenter.GetCellObject(cell.Position);
-			View.UpdateRotation(mBoardPresenter.GetCellObject(Vector2Int.zero).position);
+			View.Cell = mBoardPresenter.GetCellSpot(cell.Position);
+			View.UpdateRotation(mBoardPresenter.GetCellSpot(Vector2Int.zero).position);
 		}
 	}
 }

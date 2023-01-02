@@ -18,30 +18,37 @@ namespace Presentation.Actors.Implementation
 			mBoardPresenter = boardPresenter;
 
 			Model.CellChanged += OnCellChanged;
-			Model.IsDiscoveredChanged += OnIsDiscoveredChanged;
+			Model.IsOccupied.Changed += OnIsOccupiedChanged;
+			Model.IsDiscovered.Changed += OnIsDiscoveredChanged;
 			View.Discovered += OnDiscovered;
 		}
 
 		public void Initialize()
 		{
-			View.IsDiscovered = Model.IsDiscovered;
+			OnIsOccupiedChanged(Model.IsOccupied.Value);
+			OnIsDiscoveredChanged(Model.IsDiscovered.Value);
 			View.Type = Model.Type;
 			View.Cell = null;
 		}
 
 		private void OnCellChanged(ICell cell)
 		{
-			View.Cell = cell != null ? mBoardPresenter.GetCellObject(cell.Position) : null;
+			View.Cell = cell != null ? mBoardPresenter.GetCellSpot(cell.Position) : null;
 		}
 
 		private void OnDiscovered(bool value)
 		{
-			Model.IsDiscovered = value;
+			Model.IsDiscovered.Value = value;
 		}
 
-		private void OnIsDiscoveredChanged()
+		private void OnIsOccupiedChanged(bool value)
 		{
-			View.IsDiscovered = Model.IsDiscovered;
+			View.IsOccupied = value;
+		}
+
+		private void OnIsDiscoveredChanged(bool value)
+		{
+			View.IsDiscovered = value;
 		}
 	}
 }

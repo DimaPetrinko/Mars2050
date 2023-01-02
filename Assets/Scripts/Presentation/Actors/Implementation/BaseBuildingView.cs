@@ -5,7 +5,7 @@ namespace Presentation.Actors.Implementation
 {
 	internal class BaseBuildingView : MonoBehaviour, IBaseBuildingView
 	{
-		[SerializeField] private Pair<Faction>[] m_BuildingVariants;
+		[SerializeField] private Pair<Faction, GameObject>[] m_BuildingVariants;
 
 		public Faction Faction
 		{

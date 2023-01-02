@@ -9,10 +9,15 @@ namespace Presentation.Actors.Implementation
 		public event Action<bool> Discovered;
 
 		[SerializeField] private GameObject m_IconsParent;
-		[SerializeField] private Pair<ResourceType>[] m_Icons;
+		[SerializeField] private Pair<ResourceType, GameObject>[] m_Icons;
 		[SerializeField] private bool m_IsDiscovered;
 
 		private bool mLastDiscovered;
+
+		public bool IsOccupied
+		{
+			set => gameObject.SetActive(!value);
+		}
 
 		public bool IsDiscovered
 		{

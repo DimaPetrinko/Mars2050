@@ -30,10 +30,14 @@ namespace Presentation.Boards.Implementation
 			}
 		}
 
-		public Transform GetCellObject(Vector2Int position)
+		public Transform GetCellSpot(Vector2Int position, bool mainSpot = true)
 		{
 			var cell = Model.GetCell(position);
-			return cell != null ? mCells.FirstOrDefault(c => c.Model == cell)?.View.Transform : null;
+			if (cell == null) return null;
+
+			var view = mCells.FirstOrDefault(c => c.Model == cell)?.View;
+			var spot = mainSpot ? view?.MainSpot : view?.SecondarySpot;
+			return spot;
 		}
 	}
 }

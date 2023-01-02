@@ -1,12 +1,11 @@
 using System;
-using UnityEngine;
 
 namespace Presentation.Actors.Implementation
 {
 	[Serializable]
-	internal struct Pair<T>
+	internal struct Pair<TKey, TValue>
 	{
-		public T Type;
-		public GameObject Object;
+		public TKey Type;
+		public TValue Object;
 	}
 }

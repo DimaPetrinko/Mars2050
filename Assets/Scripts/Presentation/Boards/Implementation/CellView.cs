@@ -5,9 +5,12 @@ namespace Presentation.Boards.Implementation
 {
 	internal class CellView : MonoBehaviour, ICellView
 	{
+		[SerializeField] private Transform m_MainSpot;
+		[SerializeField] private Transform m_SecondarySpot;
 		[SerializeField] private float m_OuterRadius;
 
-		public Transform Transform => transform;
+		public Transform MainSpot => m_MainSpot;
+		public Transform SecondarySpot => m_SecondarySpot;
 
 		public Vector2Int Position
 		{
