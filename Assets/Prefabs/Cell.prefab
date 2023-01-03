@@ -357,7 +357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MainSpot: {fileID: 1152943494557477128}
   m_SecondarySpot: {fileID: 1394681968538351318}
-  m_OuterRadius: 1
+  m_GameConfig: {fileID: 11400000, guid: dac52d4b6a77fcc3a8d78c031a2d01b5, type: 2}
 --- !u!1 &6695843690711698364
 GameObject:
   m_ObjectHideFlags: 0

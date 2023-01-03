@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Core.Configs.Implementation;
+using Core.Models;
 using Core.Models.Actors;
 using Core.Models.Actors.Implementation;
 using Core.Models.Boards;
@@ -11,13 +12,16 @@ using Core.Utils;
 using Presentation.Actors.Implementation;
 using Presentation.Boards;
 using Presentation.Boards.Implementation;
+using Presentation.Implementation;
 using UnityEngine;
+using Camera = Core.Models.Implementation.Camera;
 using Random = UnityEngine.Random;
 
 namespace Presentation
 {
 	internal class BoardTest : MonoBehaviour
 	{
+		[SerializeField] private CameraView m_CameraView;
 		[SerializeField] private BoardView m_BoardPrefab;
 		[SerializeField] private ResourceView m_ResourcePrefab;
 		[SerializeField] private BaseBuildingView m_BaseBuildingPrefab;
@@ -25,7 +29,9 @@ namespace Presentation
 		[SerializeField] private GameConfig m_GameConfig;
 
 		private IBoard mBoard;
+		private ICamera mCamera;
 		private IBoardPresenter mBoardPresenter;
+		private ICameraPresenter mCameraPresenter;
 		private List<IResource> mResources;
 		private IBaseBuilding[] mBaseBuildings;
 		private Dictionary<ResourceType, IBuilding> mBuildings;
@@ -35,6 +41,12 @@ namespace Presentation
 			mBoard = new Board(m_GameConfig.BoardRadius);
 			mBoardPresenter = new BoardPresenter(mBoard, m_BoardPrefab);
 			mBoardPresenter.Initialize();
+
+			mCamera = new Camera(
+				mBoard.Radius * m_GameConfig.CellRadius * 3 / 2,
+				m_GameConfig.CameraConfig.ZoomLimits);
+			mCameraPresenter = new CameraPresenter(mCamera, m_CameraView);
+			mCameraPresenter.Initialize();
 
 			CreateResources();
 			CreateBases();
