@@ -26,7 +26,9 @@ namespace Core.Configs.Implementation
 
 		[SerializeField] private ActionConfigs m_Actions;
 		[SerializeField] private BuildingConfigs m_BuildingConfigs;
+		[SerializeField] private CameraConfig m_CameraConfig;
 		[SerializeField] private int m_BoardRadius;
+		[SerializeField] private float m_CellRadius;
 		[SerializeField] private int m_UnitsPerPlayer;
 		[SerializeField] private int m_MaxRoll;
 		[SerializeField] private int m_MaxResources;
@@ -38,7 +40,9 @@ namespace Core.Configs.Implementation
 
 		public IActionConfigs Actions => m_Actions;
 		public IBuildingConfigs BuildingConfigs => m_BuildingConfigs;
+		public ICameraConfig CameraConfig => m_CameraConfig;
 		public int BoardRadius => m_BoardRadius;
+		public float CellRadius => m_CellRadius;
 		public int UnitsPerPlayer => m_UnitsPerPlayer;
 		public int MaxRoll => m_MaxRoll;
 		public int MaxResources => m_MaxResources;

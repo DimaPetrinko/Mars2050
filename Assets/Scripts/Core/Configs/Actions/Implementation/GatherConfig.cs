@@ -13,7 +13,7 @@ namespace Core.Configs.Actions.Implementation
 		[Serializable]
 		public struct RollDefinition
 		{
-			public IntRange Range;
+			public Range<int> Range;
 			public ResourceType Resources;
 		}
 

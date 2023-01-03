@@ -8,7 +8,9 @@ namespace Core.Configs
 	{
 		IActionConfigs Actions { get; }
 		IBuildingConfigs BuildingConfigs { get; }
+		ICameraConfig CameraConfig { get; }
 		int BoardRadius { get; }
+		float CellRadius { get; }
 		int UnitsPerPlayer { get; }
 		int MaxRoll { get; }
 		int MaxResources { get; }
