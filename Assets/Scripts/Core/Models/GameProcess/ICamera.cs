@@ -1,7 +1,7 @@
 using Core.Utils;
 using UnityEngine;
 
-namespace Core.Models
+namespace Core.Models.GameProcess
 {
 	public interface ICamera : IModel
 	{

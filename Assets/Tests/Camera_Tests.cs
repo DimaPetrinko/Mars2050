@@ -1,8 +1,8 @@
-using Core.Models;
+using Core.Models.GameProcess;
 using Core.Utils;
 using NUnit.Framework;
 using UnityEngine;
-using Camera = Core.Models.Implementation.Camera;
+using Camera = Core.Models.GameProcess.Implementation.Camera;
 
 namespace Tests
 {

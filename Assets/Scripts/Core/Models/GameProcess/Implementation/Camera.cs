@@ -3,7 +3,7 @@ using Core.Implementation;
 using Core.Utils;
 using UnityEngine;
 
-namespace Core.Models.Implementation
+namespace Core.Models.GameProcess.Implementation
 {
 	public class Camera : ICamera
 	{

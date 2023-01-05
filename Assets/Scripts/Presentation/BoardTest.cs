@@ -2,19 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Core.Configs.Implementation;
-using Core.Models;
 using Core.Models.Actors;
 using Core.Models.Actors.Implementation;
 using Core.Models.Boards;
 using Core.Models.Boards.Implementation;
 using Core.Models.Enums;
+using Core.Models.GameProcess;
 using Core.Utils;
 using Presentation.Actors.Implementation;
 using Presentation.Boards;
 using Presentation.Boards.Implementation;
 using Presentation.Implementation;
 using UnityEngine;
-using Camera = Core.Models.Implementation.Camera;
+using Camera = Core.Models.GameProcess.Implementation.Camera;
 using Random = UnityEngine.Random;
 
 namespace Presentation
