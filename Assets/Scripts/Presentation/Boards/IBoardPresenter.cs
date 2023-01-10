@@ -5,6 +5,7 @@ namespace Presentation.Boards
 {
 	internal interface IBoardPresenter : IPresenter<IBoard, IBoardView>
 	{
-		Transform GetCellSpot(Vector2Int position, bool mainSpot = true);
+		Transform GetCellSpot(ICell cell, bool defaultSpot = true);
+		Transform GetCellSpot(Vector2Int position, bool defaultSpot = true);
 	}
 }

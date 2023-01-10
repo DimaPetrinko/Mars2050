@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1152943494557477128}
+  - component: {fileID: 8994483180856861421}
   m_Layer: 0
-  m_Name: MainSpot
+  m_Name: StandingSpot
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -31,37 +32,20 @@ Transform:
   m_Father: {fileID: 6695843690658886796}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4788065947927020450
-GameObject:
+--- !u!114 &8994483180856861421
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1394681968538351318}
-  m_Layer: 0
-  m_Name: SecondarySpot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1394681968538351318
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4788065947927020450}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.661, y: 0, z: 0.399}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6695843690658886796}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 352724479510259133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4181dde5a724d0d93dddbd08e35f575, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StandingSpots:
+  - {fileID: 1152943494557477128}
 --- !u!1 &6695843689858047457
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +277,6 @@ Transform:
   m_Children:
   - {fileID: 6695843689858047456}
   - {fileID: 1152943494557477128}
-  - {fileID: 1394681968538351318}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -309,8 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad4070e8cef4126ad2f9fd4c3eb2413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MainSpot: {fileID: 1152943494557477128}
-  m_SecondarySpot: {fileID: 1394681968538351318}
+  m_StandingSpotHolder: {fileID: 8994483180856861421}
   m_GameConfig: {fileID: 11400000, guid: dac52d4b6a77fcc3a8d78c031a2d01b5, type: 2}
 --- !u!1 &6695843690711698364
 GameObject:

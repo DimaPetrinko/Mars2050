@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Core.Configs.Implementation;
+using Presentation.Actors.Helpers.Implementation;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,12 +8,12 @@ namespace Presentation.Boards.Implementation
 {
 	internal class CellView : MonoBehaviour, ICellView
 	{
-		[SerializeField] private Transform m_MainSpot;
-		[SerializeField] private Transform m_SecondarySpot;
+		[SerializeField] private StandingSpotHolder m_StandingSpotHolder;
 		[SerializeField] private GameConfig m_GameConfig;
 
-		public Transform MainSpot => m_MainSpot;
-		public Transform SecondarySpot => m_SecondarySpot;
+		public Transform DefaultStandingSpot => m_StandingSpotHolder.DefaultStandingSpot;
+
+		public IEnumerable<Transform> AvailableSpots => m_StandingSpotHolder.AvailableSpots;
 
 		public Vector2Int Position
 		{

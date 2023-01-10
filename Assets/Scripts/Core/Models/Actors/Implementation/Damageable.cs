@@ -8,11 +8,15 @@ namespace Core.Models.Actors.Implementation
 	{
 		public event Action Died;
 
+		private readonly int mBaseMaxHealth;
+
 		public IReactiveProperty<int> Health { get; }
 		public IReactiveProperty<int> MaxHealth { get; }
 
 		public Damageable(int maxHealth)
 		{
+			mBaseMaxHealth = maxHealth;
+
 			MaxHealth = new ReactiveProperty<int>(maxHealth, MaxHealthSetter);
 			Health = new ReactiveProperty<int>(maxHealth, HealthSetter);
 		}
@@ -27,6 +31,11 @@ namespace Core.Models.Actors.Implementation
 			if (amount > 0) Health.Value += amount;
 		}
 
+		public void RestoreMaxHealth()
+		{
+			MaxHealth.Value = mBaseMaxHealth;
+		}
+
 		private void HealthSetter(int value, int currentValue, Action<int> setValue, Action triggerChanged)
 		{
 			value = Mathf.Clamp(value, 0, MaxHealth.Value);
@@ -37,8 +46,9 @@ namespace Core.Models.Actors.Implementation
 
 		private void MaxHealthSetter(int value, int currentValue, Action<int> setValue, Action triggerChanged)
 		{
+			var atMaxHealth = Health.Value == MaxHealth.Value;
 			setValue(value);
-			Health.Value = Health.Value;
+			Health.Value = atMaxHealth ? MaxHealth.Value : Health.Value;
 			if (currentValue != value) triggerChanged();
 		}
 	}

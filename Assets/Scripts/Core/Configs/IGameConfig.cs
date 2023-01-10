@@ -1,5 +1,6 @@
 using Core.Configs.Actions;
 using Core.Configs.Buildings;
+using Core.Models.Enums;
 using UnityEngine;
 
 namespace Core.Configs
@@ -20,5 +21,6 @@ namespace Core.Configs
 
 		int GetBuildingsToWin(int playersCount);
 		Vector2Int GetStartingConfiguration(int playersCount, int playerIndex);
+		float GetResourceRatio(ResourceType resourceType);
 	}
 }

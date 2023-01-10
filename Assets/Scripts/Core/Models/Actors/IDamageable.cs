@@ -10,5 +10,6 @@ namespace Core.Models.Actors
 		IReactiveProperty<int> MaxHealth { get; }
 		void Damage(int damage);
 		void Heal(int amount);
+		void RestoreMaxHealth();
 	}
 }

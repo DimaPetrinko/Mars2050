@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Presentation.Actors
+namespace Presentation.Actors.Helpers
 {
 	internal interface IPlaceableView : IView
 	{

@@ -277,6 +277,7 @@ MonoBehaviour:
   m_ResourcePrefab: {fileID: 2881016740573723601, guid: 8e3f8a6359358415a856e74f8011efa9, type: 3}
   m_BaseBuildingPrefab: {fileID: 4221030540437061378, guid: a5b909ac01095238e865a000b117745d, type: 3}
   m_BuildingPrefab: {fileID: 7494687830566323601, guid: bf0eefed051df59b0918570af3c8cbb0, type: 3}
+  m_UnitView: {fileID: 3305113076527388372, guid: 789bfa5f0c068b40e9c4c0ebff073e06, type: 3}
   m_GameConfig: {fileID: 11400000, guid: dac52d4b6a77fcc3a8d78c031a2d01b5, type: 2}
 --- !u!1001 &4589574553915334986
 PrefabInstance:

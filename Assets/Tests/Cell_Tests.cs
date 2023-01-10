@@ -1,4 +1,5 @@
 using System;
+using Core;
 using Core.Models.Actors;
 using Core.Models.Boards;
 using Core.Models.Boards.Implementation;
@@ -10,6 +11,8 @@ namespace Tests
 {
 	public class Cell_Tests
 	{
+		#region Mock classes
+
 		private class MockPlaceable : IPlaceable
 		{
 			public event Action<ICell> CellChanged;
@@ -36,6 +39,35 @@ namespace Tests
 				CellChanged?.Invoke(cell);
 			}
 		}
+
+		private class MockUnit : IUnit
+		{
+			public event Action<ICell> CellChanged;
+			public void ChangeCell(ICell cell)
+			{
+			}
+
+			public Faction Faction { get; }
+			public event Action Died;
+			public IReactiveProperty<int> Health { get; }
+			public IReactiveProperty<int> MaxHealth { get; }
+			public void Damage(int damage)
+			{
+				throw new NotImplementedException();
+			}
+
+			public void Heal(int amount)
+			{
+				throw new NotImplementedException();
+			}
+
+			public void RestoreMaxHealth()
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		#endregion
 
 		private ICell mCell;
 
@@ -132,6 +164,41 @@ namespace Tests
 		{
 			mCell.TryGetPlaceable(out IPlaceable result);
 			Assert.IsNull(result);
+		}
+
+		[Test]
+		public void GetLastNonUnitPlaceable_ReturnsLastAdded()
+		{
+			var lastAdded = new MockPlaceable();
+			mCell.AddPlaceable(new MockPlaceable());
+			mCell.AddPlaceable(lastAdded);
+
+			Assert.AreEqual(lastAdded, mCell.GetLastNonUnitPlaceable());
+		}
+
+		[Test]
+		public void GetLastNonUnitPlaceable_ReturnsLastAdded_WhichIsNotUnit()
+		{
+			var lastAdded = new MockPlaceable();
+			mCell.AddPlaceable(new MockPlaceable());
+			mCell.AddPlaceable(lastAdded);
+			mCell.AddPlaceable(new MockUnit());
+
+			Assert.AreEqual(lastAdded, mCell.GetLastNonUnitPlaceable());
+		}
+
+		[Test]
+		public void GetLastNonUnitPlaceable_ReturnsNull_WhenNoneAdded()
+		{
+			Assert.AreEqual(null, mCell.GetLastNonUnitPlaceable());
+		}
+
+		[Test]
+		public void GetLastNonUnitPlaceable_ReturnsNull_WhenUnitAdded()
+		{
+			mCell.AddPlaceable(new MockUnit());
+
+			Assert.AreEqual(null, mCell.GetLastNonUnitPlaceable());
 		}
 
 		[Test]
@@ -343,6 +410,55 @@ namespace Tests
 			mCell.RemovePlaceable(placeable);
 
 			Assert.IsNull(cell);
+		}
+
+		[Test]
+		public void PlaceableAdded_Triggers_WhenAddingPlaceable()
+		{
+			var triggered = false;
+
+			mCell.PlaceableAdded += _ => triggered = true;
+			mCell.AddPlaceable(new MockPlaceable());
+
+			Assert.IsTrue(triggered);
+		}
+
+		[Test]
+		public void PlaceableAdded_TriggersWithCorrectValue_WhenAddingPlaceable()
+		{
+			var placeable = new MockPlaceable();
+			IPlaceable addedPlaceable = null;
+
+			mCell.PlaceableAdded += added => addedPlaceable = added;
+			mCell.AddPlaceable(placeable);
+
+			Assert.AreEqual(placeable, addedPlaceable);
+		}
+
+		[Test]
+		public void PlaceableRemoved_Triggers_WhenRemovingPlaceable()
+		{
+			var triggered = false;
+			var placeable = new MockPlaceable();
+
+			mCell.AddPlaceable(placeable);
+			mCell.PlaceableRemoved += _ => triggered = true;
+			mCell.RemovePlaceable(placeable);
+
+			Assert.IsTrue(triggered);
+		}
+
+		[Test]
+		public void PlaceableRemoved_TriggersWithCorrectValue_WhenRemovingPlaceable()
+		{
+			var placeable = new MockPlaceable();
+			IPlaceable removedPlaceable = null;
+
+			mCell.AddPlaceable(placeable);
+			mCell.PlaceableRemoved += removed => removedPlaceable = removed;
+			mCell.RemovePlaceable(placeable);
+
+			Assert.AreEqual(placeable, removedPlaceable);
 		}
 	}
 }

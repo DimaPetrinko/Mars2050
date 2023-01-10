@@ -1,12 +1,10 @@
-using Core.Models.Enums;
+using Presentation.Actors.Helpers;
 using UnityEngine;
 
 namespace Presentation.Actors
 {
-	internal interface IBaseBuildingView : IPlaceableView
+	internal interface IBaseBuildingView : IActorView, IPlaceableView, IStandingSpotHolder
 	{
-		Faction Faction { set; }
-
 		void UpdateRotation(Vector3 zeroCellPosition);
 	}
 }

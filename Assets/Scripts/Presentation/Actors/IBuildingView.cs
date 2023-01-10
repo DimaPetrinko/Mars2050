@@ -1,12 +1,10 @@
 using Core.Models.Enums;
+using Presentation.Actors.Helpers;
 
 namespace Presentation.Actors
 {
-	internal interface IBuildingView : IPlaceableView
+	internal interface IBuildingView : IActorView, IPlaceableView, IDamageableView, IStandingSpotHolder
 	{
-		Faction Faction { set; }
 		ResourceType Type { set; }
-		int Health { set; }
-		int MaxHealth { set; }
 	}
 }

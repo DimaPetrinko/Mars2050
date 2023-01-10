@@ -34,10 +34,6 @@ namespace Core.Models.Actors.Implementation
 		public void ChangeCell(ICell cell)
 		{
 			mPlaceable.ChangeCell(cell);
-			if (cell.TryGetPlaceable(out IResource resource))
-			{
-				resource.IsOccupied.Value = true;
-			}
 		}
 
 		#endregion
@@ -63,6 +59,11 @@ namespace Core.Models.Actors.Implementation
 		public void Heal(int amount)
 		{
 			mDamageable.Heal(amount);
+		}
+
+		public void RestoreMaxHealth()
+		{
+			mDamageable.RestoreMaxHealth();
 		}
 
 		#endregion

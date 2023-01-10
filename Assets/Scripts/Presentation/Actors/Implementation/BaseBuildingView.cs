@@ -1,35 +1,29 @@
+using System.Collections.Generic;
 using Core.Models.Enums;
+using Presentation.Actors.Helpers.Implementation;
 using UnityEngine;
 
 namespace Presentation.Actors.Implementation
 {
 	internal class BaseBuildingView : MonoBehaviour, IBaseBuildingView
 	{
-		[SerializeField] private Pair<Faction, GameObject>[] m_BuildingVariants;
+		[SerializeField] private ActorView m_Actor;
+		[SerializeField] private PlaceableView m_Placeable;
+		[SerializeField] private StandingSpotHolder m_StandingSpotHolder;
 
 		public Faction Faction
 		{
-			set
-			{
-				foreach (var variant in m_BuildingVariants) variant.Object.SetActive(variant.Type == value);
-			}
+			set => m_Actor.Faction = value;
 		}
 
 		public Transform Cell
 		{
-			set
-			{
-				transform.SetParent(value);
-				if (value == null)
-				{
-					gameObject.SetActive(false);
-					return;
-				}
-
-				gameObject.SetActive(true);
-				transform.localPosition = Vector3.zero;
-			}
+			set => m_Placeable.Cell = value;
 		}
+
+		public Transform DefaultStandingSpot => m_StandingSpotHolder.DefaultStandingSpot;
+
+		public IEnumerable<Transform> AvailableSpots => m_StandingSpotHolder.AvailableSpots;
 
 		public void UpdateRotation(Vector3 zeroCellPosition)
 		{

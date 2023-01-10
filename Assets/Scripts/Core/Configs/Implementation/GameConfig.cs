@@ -4,6 +4,8 @@ using Core.Configs.Actions;
 using Core.Configs.Actions.Implementation;
 using Core.Configs.Buildings;
 using Core.Configs.Buildings.Implementation;
+using Core.Models.Enums;
+using Core.Utils;
 using UnityEngine;
 
 namespace Core.Configs.Implementation
@@ -37,6 +39,7 @@ namespace Core.Configs.Implementation
 		[SerializeField] private int m_MaxBuildingWithUnitHealth;
 		[SerializeField] private WinConfiguration[] m_WinConfigurations;
 		[SerializeField] private StartingConfiguration[] m_StartingConfigurations;
+		[SerializeField] private Pair<ResourceType, int>[] m_ResourcesDistribution;
 
 		public IActionConfigs Actions => m_Actions;
 		public IBuildingConfigs BuildingConfigs => m_BuildingConfigs;
@@ -60,6 +63,12 @@ namespace Core.Configs.Implementation
 			return m_StartingConfigurations
 				.FirstOrDefault(c => c.StartingPosition.Length == playersCount)
 				.StartingPosition[playerIndex] * (m_BoardRadius - 1);
+		}
+
+		public float GetResourceRatio(ResourceType resourceType)
+		{
+			var sum = m_ResourcesDistribution.Sum(p => p.Object);
+			return m_ResourcesDistribution.FirstOrDefault(p => p.Type == resourceType).Object / (float)sum;
 		}
 	}
 }

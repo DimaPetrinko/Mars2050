@@ -54,6 +54,15 @@ namespace Tests
 		}
 
 		[Test]
+		public void Health_IsUpdated_WhenMaxIsSetAndItEqualsToMax()
+		{
+			mDamageable.Health.Value = mDamageable.MaxHealth.Value;
+			mDamageable.MaxHealth.Value = 6;
+
+			Assert.AreEqual(6, mDamageable.Health.Value);
+		}
+
+		[Test]
 		public void Damage_SubtractsHealth()
 		{
 			mDamageable.Damage(2);
@@ -165,6 +174,16 @@ namespace Tests
 			mDamageable.MaxHealth.Value = 3;
 
 			Assert.IsFalse(triggered);
+		}
+
+		[Test]
+		public void RestoreMaxHealth_SetsMaxHealthToOriginalValue()
+		{
+			mDamageable.MaxHealth.Value = 10;
+
+			mDamageable.RestoreMaxHealth();
+
+			Assert.AreEqual(3, mDamageable.MaxHealth.Value);
 		}
 	}
 }

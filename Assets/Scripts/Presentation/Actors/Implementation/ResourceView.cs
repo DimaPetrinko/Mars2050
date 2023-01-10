@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Core.Models.Enums;
+using Core.Utils;
+using Presentation.Actors.Helpers.Implementation;
 using UnityEngine;
 
 namespace Presentation.Actors.Implementation
@@ -8,6 +11,8 @@ namespace Presentation.Actors.Implementation
 	{
 		public event Action<bool> Discovered;
 
+		[SerializeField] private PlaceableView m_PlaceableView;
+		[SerializeField] private StandingSpotHolder m_StandingSpotHolder;
 		[SerializeField] private GameObject m_IconsParent;
 		[SerializeField] private Pair<ResourceType, GameObject>[] m_Icons;
 		[SerializeField] private bool m_IsDiscovered;
@@ -16,7 +21,7 @@ namespace Presentation.Actors.Implementation
 
 		public bool IsOccupied
 		{
-			set => gameObject.SetActive(!value);
+			set => m_IconsParent.SetActive(!value);
 		}
 
 		public bool IsDiscovered
@@ -34,19 +39,14 @@ namespace Presentation.Actors.Implementation
 
 		public Transform Cell
 		{
-			set
-			{
-				transform.SetParent(value);
-				if (value != null)
-				{
-					gameObject.SetActive(true);
-					transform.localPosition = Vector3.zero;
-				}
-				else gameObject.SetActive(false);
-			}
+			set => m_PlaceableView.Cell = value;
 		}
 
-		private void Update()
+		public Transform DefaultStandingSpot => m_StandingSpotHolder.DefaultStandingSpot;
+
+		public IEnumerable<Transform> AvailableSpots => m_StandingSpotHolder.AvailableSpots;
+
+		private void Update() // TODO: for testing purposes
 		{
 			if (m_IsDiscovered != mLastDiscovered) Discovered?.Invoke(m_IsDiscovered);
 			mLastDiscovered = m_IsDiscovered;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Core.Models.Actors;
@@ -8,6 +9,9 @@ namespace Core.Models.Boards.Implementation
 {
 	public class Cell : ICell
 	{
+		public event Action<IPlaceable> PlaceableAdded;
+		public event Action<IPlaceable> PlaceableRemoved;
+
 		private readonly List<IPlaceable> mPlaceables = new();
 
 		public Vector2Int Position { get; }
@@ -43,6 +47,11 @@ namespace Core.Models.Boards.Implementation
 			return (T)mPlaceables.FirstOrDefault(p => p is T);
 		}
 
+		public IPlaceable GetLastNonUnitPlaceable()
+		{
+			return mPlaceables.LastOrDefault(p => p is not IUnit);
+		}
+
 		public bool HasActor(Faction faction = Faction.Any)
 		{
 			return mPlaceables.Any(p => p is IActor actor && (faction == Faction.Any || actor.Faction == faction));
@@ -69,12 +78,14 @@ namespace Core.Models.Boards.Implementation
 		{
 			mPlaceables.Add(placeable);
 			placeable.ChangeCell(this);
+			PlaceableAdded?.Invoke(placeable);
 		}
 
 		public void RemovePlaceable(IPlaceable placeable)
 		{
 			mPlaceables.Remove(placeable);
 			placeable.ChangeCell(null);
+			PlaceableRemoved?.Invoke(placeable);
 		}
 	}
 }

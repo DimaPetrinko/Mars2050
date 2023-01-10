@@ -7,7 +7,6 @@ namespace Core.Models.Actors.Implementation
 {
 	public class Resource : IResource
 	{
-		public IReactiveProperty<bool> IsOccupied { get; } = new ReactiveProperty<bool>();
 		public IReactiveProperty<bool> IsDiscovered { get; } = new ReactiveProperty<bool>();
 
 		public ResourceType Type { get; }

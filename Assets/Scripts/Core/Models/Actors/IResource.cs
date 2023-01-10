@@ -5,7 +5,6 @@ namespace Core.Models.Actors
 {
 	public interface IResource : IPlaceable
 	{
-		IReactiveProperty<bool> IsOccupied { get; }
 		IReactiveProperty<bool> IsDiscovered { get; }
 		ResourceType Type { get; }
 	}

@@ -1,3 +1,4 @@
+using System;
 using Core.Models.Actors.Implementation;
 using Core.Models.Boards;
 using Core.Models.Enums;
@@ -8,47 +9,56 @@ namespace Tests
 {
 	public class Placeable_Tests
 	{
+		#region Mock classes
+
 		private class MockCell : ICell
 		{
+			public event Action<IPlaceable> PlaceableAdded;
+			public event Action<IPlaceable> PlaceableRemoved;
 			public Vector2Int Position { get; }
 			public bool HasPlaceable()
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 
 			public bool HasPlaceable<T>() where T : IPlaceable
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 
 			public bool TryGetPlaceable<T>(out T placeable) where T : IPlaceable
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 
 			public T GetPlaceable<T>() where T : IPlaceable
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
+			}
+
+			public IPlaceable GetLastNonUnitPlaceable()
+			{
+				throw new NotImplementedException();
 			}
 
 			public bool HasActor(Faction faction = Faction.Any)
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 
 			public bool HasActor<T>(Faction faction = Faction.Any)
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 
 			public bool TryGetActor<T>(out T placeable, Faction faction = Faction.Any)
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 
 			public T GetActor<T>(Faction faction = Faction.Any)
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 
 			public void AddPlaceable(IPlaceable placeable)
@@ -59,6 +69,8 @@ namespace Tests
 			{
 			}
 		}
+
+		#endregion
 
 		private IPlaceable mPlaceable;
 

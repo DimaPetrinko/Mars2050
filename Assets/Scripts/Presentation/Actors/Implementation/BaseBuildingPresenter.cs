@@ -1,3 +1,4 @@
+using System.Linq;
 using Core.Models.Actors;
 using Core.Models.Boards;
 using Presentation.Boards;
@@ -12,6 +13,8 @@ namespace Presentation.Actors.Implementation
 		public IBaseBuilding Model { get; }
 		public IBaseBuildingView View { get; }
 
+		public Transform Spot => View.AvailableSpots.FirstOrDefault();
+
 		public BaseBuildingPresenter(IBaseBuilding model, IBaseBuildingView view, IBoardPresenter boardPresenter)
 		{
 			Model = model;
@@ -24,11 +27,12 @@ namespace Presentation.Actors.Implementation
 		public void Initialize()
 		{
 			View.Faction = Model.Faction;
+			View.Cell = null;
 		}
 
 		private void OnCellChanged(ICell cell)
 		{
-			View.Cell = mBoardPresenter.GetCellSpot(cell.Position);
+			View.Cell = mBoardPresenter.GetCellSpot(cell);
 			View.UpdateRotation(mBoardPresenter.GetCellSpot(Vector2Int.zero).position);
 		}
 	}

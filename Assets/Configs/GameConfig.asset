@@ -60,3 +60,12 @@ MonoBehaviour:
     - {x: 0, y: 1}
     - {x: -1, y: 1}
     - {x: -1, y: 0}
+  m_ResourcesDistribution:
+  - Type: 1
+    Object: 1
+  - Type: 2
+    Object: 1
+  - Type: 4
+    Object: 2
+  - Type: 8
+    Object: 1

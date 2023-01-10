@@ -1,9 +1,9 @@
 using System;
 
-namespace Presentation.Actors.Implementation
+namespace Core.Utils
 {
 	[Serializable]
-	internal struct Pair<TKey, TValue>
+	public struct Pair<TKey, TValue>
 	{
 		public TKey Type;
 		public TValue Object;
