@@ -18,6 +18,7 @@ MonoBehaviour:
     Relation: 0
     Type: -1
   m_Repeatable: 1
+  m_AttackRange: 1
   m_RollDefinition:
   - Range:
       From: 1

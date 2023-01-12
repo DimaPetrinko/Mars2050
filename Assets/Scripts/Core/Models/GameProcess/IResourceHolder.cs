@@ -9,7 +9,7 @@ namespace Core.Models.GameProcess
 		int ResourcesCount { get; }
 
 		bool HasResource(ResourceType resource, int amount);
-		void AddResources(ResourceType[] resources);
-		void UseResources(ResourceType[] resources);
+		void AddResources(Dictionary<ResourceType, int> resources);
+		void UseResources(Dictionary<ResourceType, int> resources);
 	}
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Core.Models.Enums;
 
 namespace Core.Configs.Actions
@@ -17,22 +18,14 @@ namespace Core.Configs.Actions
 		public ResourceType Type;
 	}
 
-	public readonly struct ResourceData
+	// TODO: Use it everywhere
+	public struct ResourcePackage
 	{
-		private readonly ResourceType mType;
-		private readonly int mAmount;
+		public IDictionary<ResourceType, int> Content { get; }
 
-		public ResourceData(ResourceType type, int amount)
+		public ResourcePackage(IDictionary<ResourceType, int> content)
 		{
-			mType = type;
-			mAmount = amount;
-		}
-
-		public ResourceType[] AsArray()
-		{
-			var resources = new ResourceType[mAmount];
-			for (var i = 0; i < resources.Length; i++) resources[i] = mType;
-			return resources;
+			Content = content;
 		}
 	}
 }

@@ -9,14 +9,62 @@ namespace Core.Services.GameProcess
 {
 	public interface IActionProcessor
 	{
-		ActionResult Move(IPlayer performer, ICell from, ICell to, IMoveConfig config);
-		ActionResult Discover(IPlayer performer, ICell cell, IDiscoverConfig config);
-		ActionResult Gather(IPlayer performer, IEnumerable<ICell> cells, int roll, IGatherConfig config);
-		ActionResult Build(IPlayer performer, ICell cell, IBuildConfig config);
-		ActionResult Attack(IPlayer performer, ICell from, ICell to, bool repeat, int roll, IAttackConfig config);
-		ActionResult Heal(IPlayer performer, ICell cell, bool repeat, IHealConfig config);
-		ActionResult Trade(IPlayer performer, ResourceType from, ResourceType to, ITradeConfig config);
-		ActionResult PlayerTrade(IPlayer performer, IResourceHolder other, ResourceType from, ResourceType to,
+		ActionResult Move(
+			IPlayer performer,
+			ICell from,
+			ICell to,
+			Dictionary<ResourceType, int> resourcesToUse,
+			IMoveConfig config);
+
+		ActionResult Discover(
+			IPlayer performer,
+			ICell cell,
+			Dictionary<ResourceType, int> resourcesToUse,
+			IDiscoverConfig config);
+
+		ActionResult Gather(
+			IPlayer performer,
+			IEnumerable<ICell> cells,
+			Dictionary<ResourceType, int> resourcesToUse,
+			int roll,
+			IGatherConfig config);
+
+		ActionResult Build(
+			IPlayer performer,
+			ICell cell,
+			Dictionary<ResourceType, int> resourcesToUse,
+			IBuildConfig config);
+
+		ActionResult Attack(
+			IPlayer performer,
+			ICell from,
+			ICell to,
+			Dictionary<ResourceType, int> resourcesToUse,
+			int roll,
+			bool repeat,
+			IAttackConfig config);
+
+		ActionResult Heal(
+			IPlayer performer,
+			ICell cell,
+			Dictionary<ResourceType, int> resourcesToUse,
+			bool repeat,
+			IHealConfig config);
+
+		public ActionResult Trade(
+			IPlayer performer,
+			Dictionary<ResourceType, int> resourcesToSell,
+			Dictionary<ResourceType, int> resourcesToBuy,
+			bool repeat,
+			ITradeConfig config
+		);
+
+		ActionResult PlayerTrade(
+			IPlayer performer,
+			IResourceHolder other,
+			Dictionary<ResourceType, int> resourcesToSell,
+			Dictionary<ResourceType, int> resourcesToBuy,
+			bool repeat,
 			ITradeConfig config);
 	}
 }

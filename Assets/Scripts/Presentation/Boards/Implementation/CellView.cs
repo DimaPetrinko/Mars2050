@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Core.Configs;
 using Core.Configs.Implementation;
 using Presentation.Actors.Helpers.Implementation;
 using UnityEditor;
@@ -20,9 +21,11 @@ namespace Presentation.Boards.Implementation
 			set => transform.localPosition = ToWorldPosition(value);
 		}
 
+		private IGameConfig Config => m_GameConfig;
+
 		private void Start()
 		{
-			var radius = m_GameConfig.CellRadius;
+			var radius = Config.CellRadius;
 			transform.localScale = new Vector3(radius, radius, radius);
 		}
 
@@ -31,8 +34,8 @@ namespace Presentation.Boards.Implementation
 			var sqrt = Mathf.Sqrt(3);
 			const float f = 3f / 2;
 
-			var x = m_GameConfig.CellRadius * (position.x * sqrt + position.y * sqrt / 2);
-			var y = m_GameConfig.CellRadius * position.y * f;
+			var x = Config.CellRadius * (position.x * sqrt + position.y * sqrt / 2);
+			var y = Config.CellRadius * position.y * f;
 
 			return new Vector3(x, 0, y);
 		}
@@ -41,7 +44,7 @@ namespace Presentation.Boards.Implementation
 		private void OnDrawGizmos()
 		{
 			Handles.color = Color.green;
-			Handles.DrawWireDisc(transform.position, transform.up, m_GameConfig.CellRadius);
+			Handles.DrawWireDisc(transform.position, transform.up, Config.CellRadius);
 		}
 #endif
 	}

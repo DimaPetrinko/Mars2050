@@ -18,12 +18,12 @@ namespace Tests
 				throw new System.NotImplementedException();
 			}
 
-			public void AddResources(ResourceType[] resources)
+			public void AddResources(Dictionary<ResourceType, int> resources)
 			{
 				throw new System.NotImplementedException();
 			}
 
-			public void UseResources(ResourceType[] resources)
+			public void UseResources(Dictionary<ResourceType, int> resources)
 			{
 				throw new System.NotImplementedException();
 			}
@@ -48,6 +48,7 @@ namespace Tests
 			public IEnumerable<ITechnology> Technologies { get; }
 			public IEnumerable<IActor> Actors { get; }
 		}
+
 		[Test]
 		public void MoveAction_Fails()
 		{

@@ -12,5 +12,10 @@ namespace Core.Utils
 			return ((ResourceType[])Enum.GetValues(typeof(ResourceType)))
 				.Where(mask => ((int)flags & (int)mask) > 0);
 		}
+
+		public static bool Contains(this ResourceType flags, ResourceType other)
+		{
+			return (flags & other) > 0;
+		}
 	}
 }
