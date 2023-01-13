@@ -1,15 +1,18 @@
-using System.Collections.Generic;
+using System;
 using Core.Models.Enums;
+using Core.Utils;
 
 namespace Core.Models.GameProcess
 {
 	public interface IResourceHolder
 	{
-		IEnumerable<ResourceType> Resources { get; }
-		int ResourcesCount { get; }
+		event Action<ResourceType, int> ResourceAmountChanged;
+
+		int ResourcesAmount { get; }
 
 		bool HasResource(ResourceType resource, int amount);
-		void AddResources(Dictionary<ResourceType, int> resources);
-		void UseResources(Dictionary<ResourceType, int> resources);
+		void AddResources(ResourcePackage resourcePackage);
+		void UseResources(ResourcePackage resourcePackage);
+		int GetResource(ResourceType resourceType);
 	}
 }

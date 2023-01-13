@@ -279,7 +279,7 @@ namespace Core.Services.GameProcess.Implementation
 			return resources.All(costData =>
 				costData.Relation == ResourceRelation.Same
 					? costData.Type.AsCollection().Any(r => resourceHolder.HasResource(r, costData.Amount))
-					: resourceHolder.ResourcesCount >= costData.Amount);
+					: resourceHolder.ResourcesAmount >= costData.Amount);
 		}
 
 		private bool EnoughResources(IResourceHolder resourceHolder, ResourcePackage resources)

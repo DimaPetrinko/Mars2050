@@ -27,6 +27,11 @@ namespace Core.Utils
 			Content = resources;
 		}
 
+		public ResourcePackage(ResourceType type, int amount)
+		{
+			Content = new Dictionary<ResourceType, int> { { type, amount } };
+		}
+
 		public void Clear()
 		{
 			Content.Clear();
