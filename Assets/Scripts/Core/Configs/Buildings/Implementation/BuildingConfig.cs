@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Core.Configs.Actions;
 using Core.Models.Enums;
+using Core.Utils;
 using UnityEngine;
 
 namespace Core.Configs.Buildings.Implementation

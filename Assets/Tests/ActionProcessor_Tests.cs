@@ -1,54 +1,9 @@
-using System.Collections.Generic;
-using Core.Models.Actors;
-using Core.Models.Enums;
-using Core.Models.GameProcess;
-using Core.Models.Technology;
 using NUnit.Framework;
 
 namespace Tests
 {
 	public class ActionProcessor_Tests
 	{
-		private class MockPlayer : IPlayer
-		{
-			public IEnumerable<ResourceType> Resources { get; }
-			public int ResourcesCount { get; }
-			public bool HasResource(ResourceType resource, int amount)
-			{
-				throw new System.NotImplementedException();
-			}
-
-			public void AddResources(Dictionary<ResourceType, int> resources)
-			{
-				throw new System.NotImplementedException();
-			}
-
-			public void UseResources(Dictionary<ResourceType, int> resources)
-			{
-				throw new System.NotImplementedException();
-			}
-
-			public Faction Faction { get; }
-			public int Oxygen { get; set; }
-			public void UseOxygen(int oxygen)
-			{
-				throw new System.NotImplementedException();
-			}
-
-			public int Roll()
-			{
-				throw new System.NotImplementedException();
-			}
-
-			public void EndTurn()
-			{
-				throw new System.NotImplementedException();
-			}
-
-			public IEnumerable<ITechnology> Technologies { get; }
-			public IEnumerable<IActor> Actors { get; }
-		}
-
 		[Test]
 		public void MoveAction_Fails()
 		{

@@ -5,7 +5,6 @@ using Core.Configs.Actions;
 using Core.Configs.Buildings;
 using Core.Models.Actors;
 using Core.Models.Boards;
-using Core.Models.Enums;
 using Core.Models.GameProcess;
 using Core.Utils;
 
@@ -42,7 +41,7 @@ namespace Core.Services.GameProcess.Implementation
 			IPlayer performer,
 			ICell from,
 			ICell to,
-			Dictionary<ResourceType, int> resourcesToUse,
+			ResourcePackage resourcesToUse,
 			IMoveConfig config)
 		{
 			if (!EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
@@ -54,9 +53,9 @@ namespace Core.Services.GameProcess.Implementation
 			    && building.Health.Value < building.MaxHealth.Value)
 				return ActionResult.CellHasDamagedBuilding;
 			if ((from.Position - to.Position).magnitude > config.MoveRange) return ActionResult.ExceedsRange;
-			if (resourcesToUse.Count == 0) return ActionResult.NoResourcesProvided;
+			if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
 			var (toUse, _) = new ResourceProcessor().Process(resourcesToUse, config.Resources);
-			if (toUse.Count == 0) return ActionResult.NoResourcesProvided;
+			if (toUse.Amount == 0) return ActionResult.NoResourcesProvided;
 
 			ApplyAction(performer, config.Oxygen, toUse, () =>
 			{
@@ -70,7 +69,7 @@ namespace Core.Services.GameProcess.Implementation
 		public ActionResult Discover(
 			IPlayer performer,
 			ICell cell,
-			Dictionary<ResourceType, int> resourcesToUse,
+			ResourcePackage resourcesToUse,
 			IDiscoverConfig config)
 		{
 			if (!EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
@@ -78,9 +77,9 @@ namespace Core.Services.GameProcess.Implementation
 			if (!cell.HasActor<IUnit>(performer.Faction)) return ActionResult.NoUnitOfCorrectFactionInCell;
 			if (!cell.TryGetPlaceable(out IResource resource)) return ActionResult.NoResourceInCell;
 			if (resource.IsDiscovered.Value) return ActionResult.ResourceAlreadyDiscovered;
-			if (resourcesToUse.Count == 0) return ActionResult.NoResourcesProvided;
+			if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
 			var (toUse, _) = new ResourceProcessor().Process(resourcesToUse, config.Resources);
-			if (toUse.Count == 0) return ActionResult.NoResourcesProvided;
+			if (toUse.Amount == 0) return ActionResult.NoResourcesProvided;
 
 			ApplyAction(performer, config.Oxygen, toUse, () =>
 			{
@@ -93,24 +92,24 @@ namespace Core.Services.GameProcess.Implementation
 		public ActionResult Gather(
 			IPlayer performer,
 			IEnumerable<ICell> cells,
-			Dictionary<ResourceType, int> resourcesToUse,
+			ResourcePackage resourcesToUse,
 			int roll,
 			IGatherConfig config)
 		{
 			if (!EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
-			if (resourcesToUse.Count == 0) return ActionResult.NoResourcesProvided;
+			if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
 			var (toUse, _) = new ResourceProcessor().Process(resourcesToUse, config.Resources);
-			if (toUse.Count == 0) return ActionResult.NoResourcesProvided;
+			if (toUse.Amount == 0) return ActionResult.NoResourcesProvided;
 			var resources = config.GetResourcesForRoll(roll).AsCollection().ToList();
-			var resourcesToGather = cells
+			var resourcesToGather = new ResourcePackage(cells
 				.Where(c => c.HasPlaceable<IResource>() && c.HasActor<IResourceGatherer>(performer.Faction))
 				.Select(c => c.GetPlaceable<IResource>())
 				.Where(r => r.IsDiscovered.Value)
 				.Where(r => resources.Contains(r.Type))
 				.Select(r => r.Type)
 				.GroupBy(r => r)
-				.ToDictionary(g => g.Key, g => g.Count());
+				.ToDictionary(g => g.Key, g => g.Count()));
 
 			ApplyAction(performer, config.Oxygen, toUse, () =>
 			{
@@ -123,7 +122,7 @@ namespace Core.Services.GameProcess.Implementation
 		public ActionResult Build(
 			IPlayer performer,
 			ICell cell,
-			Dictionary<ResourceType, int> resourcesToUse,
+			ResourcePackage resourcesToUse,
 			IBuildConfig config)
 		{
 			if (!EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
@@ -133,12 +132,12 @@ namespace Core.Services.GameProcess.Implementation
 			if (!EnoughResources(performer, cost)) return ActionResult.NotEnoughResources;
 			if (!cell.HasActor<IUnit>(performer.Faction)) return ActionResult.NoUnitOfCorrectFactionInCell;
 			if (cell.HasActor<IBuilding>()) return ActionResult.CellIsOccupiedByBuilding;
-			if (resourcesToUse.Count == 0) return ActionResult.NoResourcesProvided;
+			if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
 			var resourceProcessor = new ResourceProcessor();
 			var (toUse, left) = resourceProcessor.Process(resourcesToUse, config.Resources);
 			var (buildCost, _) = resourceProcessor.Process(left, buildingConfig.BuildCost.ToArray());
-			if (toUse.Count == 0) return ActionResult.NoResourcesProvided;
-			if (buildCost.Count == 0) return ActionResult.NoResourcesProvided;
+			if (toUse.Amount == 0) return ActionResult.NoResourcesProvided;
+			if (buildCost.Amount == 0) return ActionResult.NoResourcesProvided;
 
 			ApplyAction(performer, config.Oxygen, toUse, () =>
 			{
@@ -154,7 +153,7 @@ namespace Core.Services.GameProcess.Implementation
 			IPlayer performer,
 			ICell from,
 			ICell to,
-			Dictionary<ResourceType, int> resourcesToUse,
+			ResourcePackage resourcesToUse,
 			int roll,
 			bool repeat,
 			IAttackConfig config)
@@ -165,9 +164,9 @@ namespace Core.Services.GameProcess.Implementation
 			if (!to.TryGetActor(out IDamageable other) && ((IActor)other).Faction == performer.Faction)
 				return ActionResult.NoUnitOfCorrectFactionInCell;
 			if ((from.Position - to.Position).magnitude > config.AttackRange) return ActionResult.ExceedsRange;
-			if (resourcesToUse.Count == 0) return ActionResult.NoResourcesProvided;
+			if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
 			var (toUse, _) = new ResourceProcessor().Process(resourcesToUse, config.Resources);
-			if (toUse.Count == 0) return ActionResult.NoResourcesProvided;
+			if (toUse.Amount == 0) return ActionResult.NoResourcesProvided;
 
 			ApplyAction(performer, config.Oxygen, toUse, () =>
 			{
@@ -180,7 +179,7 @@ namespace Core.Services.GameProcess.Implementation
 		public ActionResult Heal(
 			IPlayer performer,
 			ICell cell,
-			Dictionary<ResourceType, int> resourcesToUse,
+			ResourcePackage resourcesToUse,
 			bool repeat,
 			IHealConfig config)
 		{
@@ -188,9 +187,9 @@ namespace Core.Services.GameProcess.Implementation
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
 			if (!cell.TryGetActor(out IDamageable damageable) && ((IActor)damageable).Faction != performer.Faction)
 				return ActionResult.NoUnitOfCorrectFactionInCell;
-			if (resourcesToUse.Count == 0) return ActionResult.NoResourcesProvided;
+			if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
 			var (toUse, _) = new ResourceProcessor().Process(resourcesToUse, config.Resources);
-			if (toUse.Count == 0) return ActionResult.NoResourcesProvided;
+			if (toUse.Amount == 0) return ActionResult.NoResourcesProvided;
 
 			ApplyAction(performer, config.Oxygen, toUse, () =>
 			{
@@ -202,22 +201,22 @@ namespace Core.Services.GameProcess.Implementation
 
 		public ActionResult Trade(
 			IPlayer performer,
-			Dictionary<ResourceType, int> resourcesToSell,
-			Dictionary<ResourceType, int> resourcesToBuy,
+			ResourcePackage resourcesToSell,
+			ResourcePackage resourcesToBuy,
 			bool repeat,
 			ITradeConfig config
 			)
 		{
 			if (!(repeat && config.Repeatable) && !EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
-			if (resourcesToSell.Count == 0) return ActionResult.NoResourcesProvided;
-			if (resourcesToBuy.Count == 0) return ActionResult.NoResourcesProvided;
+			if (resourcesToSell.Amount == 0) return ActionResult.NoResourcesProvided;
+			if (resourcesToBuy.Amount == 0) return ActionResult.NoResourcesProvided;
 			var processor = new ResourceProcessor();
 			var (toSell, _) = processor.Process(resourcesToSell, config.Resources);
 			var (toBuy, _) = processor.Process(resourcesToBuy, new[] { config.PurchaseResource });
 
-			if (toSell.Count == 0) return ActionResult.NoResourcesProvided;
-			if (toBuy.Count == 0) return ActionResult.NoResourcesProvided;
+			if (toSell.Amount == 0) return ActionResult.NoResourcesProvided;
+			if (toBuy.Amount == 0) return ActionResult.NoResourcesProvided;
 
 			ApplyAction(performer, config.Oxygen, toSell, () =>
 			{
@@ -230,22 +229,22 @@ namespace Core.Services.GameProcess.Implementation
 		public ActionResult PlayerTrade(
 			IPlayer performer,
 			IResourceHolder other,
-			Dictionary<ResourceType, int> resourcesToSell,
-			Dictionary<ResourceType, int> resourcesToBuy,
+			ResourcePackage resourcesToSell,
+			ResourcePackage resourcesToBuy,
 			bool repeat,
 			ITradeConfig config)
 		{
 			if (!(repeat && config.Repeatable) && !EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
 			if (!EnoughResources(other, resourcesToBuy)) return ActionResult.NotEnoughResources;
-			if (resourcesToSell.Count == 0) return ActionResult.NoResourcesProvided;
-			if (resourcesToBuy.Count == 0) return ActionResult.NoResourcesProvided;
+			if (resourcesToSell.Amount == 0) return ActionResult.NoResourcesProvided;
+			if (resourcesToBuy.Amount == 0) return ActionResult.NoResourcesProvided;
 			var processor = new ResourceProcessor();
 			var (toSell, _) = processor.Process(resourcesToSell, config.Resources);
 			var (toBuy, _) = processor.Process(resourcesToBuy, new[] { config.PurchaseResource });
 
-			if (toSell.Count == 0) return ActionResult.NoResourcesProvided;
-			if (toBuy.Count == 0) return ActionResult.NoResourcesProvided;
+			if (toSell.Amount == 0) return ActionResult.NoResourcesProvided;
+			if (toBuy.Amount == 0) return ActionResult.NoResourcesProvided;
 
 			ApplyAction(performer, config.Oxygen, toSell, () =>
 			{
@@ -261,7 +260,7 @@ namespace Core.Services.GameProcess.Implementation
 		private void ApplyAction(
 			IPlayer performer,
 			int oxygen,
-			Dictionary<ResourceType, int> resourcesToUse,
+			ResourcePackage resourcesToUse,
 			Action applyAction)
 		{
 			performer.UseOxygen(oxygen);
@@ -283,9 +282,9 @@ namespace Core.Services.GameProcess.Implementation
 					: resourceHolder.ResourcesCount >= costData.Amount);
 		}
 
-		private bool EnoughResources(IResourceHolder resourceHolder, IDictionary<ResourceType, int> resources)
+		private bool EnoughResources(IResourceHolder resourceHolder, ResourcePackage resources)
 		{
-			return resources.All(r => resourceHolder.HasResource(r.Key, r.Value));
+			return resources.Content.All(r => resourceHolder.HasResource(r.Key, r.Value));
 		}
 	}
 }
