@@ -263,14 +263,14 @@ namespace Core.Services.GameProcess.Implementation
 			ResourcePackage resourcesToUse,
 			Action applyAction)
 		{
-			performer.UseOxygen(oxygen);
+			performer.Oxygen.Value -= oxygen;
 			performer.UseResources(resourcesToUse);
 			applyAction();
 		}
 
 		private bool EnoughOxygen(ITurnPerformer performer, IActionConfig config)
 		{
-			return performer.Oxygen >= config.Oxygen;
+			return performer.Oxygen.Value >= config.Oxygen;
 		}
 
 		// TODO: may be replaced with resource processor

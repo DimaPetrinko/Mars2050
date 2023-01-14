@@ -5,10 +5,9 @@ namespace Core.Models.GameProcess
 	public interface ITurnPerformer
 	{
 		Faction Faction { get; }
-		int Oxygen { get; set; }
+		IReactiveProperty<int> Oxygen { get; }
+		IReactiveProperty<bool> HisTurn { get; }
 
-		void UseOxygen(int oxygen);
 		int Roll();
-		void EndTurn();
 	}
 }
