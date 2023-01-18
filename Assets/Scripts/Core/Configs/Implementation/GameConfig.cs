@@ -40,6 +40,7 @@ namespace Core.Configs.Implementation
 		[SerializeField] private WinConfiguration[] m_WinConfigurations;
 		[SerializeField] private StartingConfiguration[] m_StartingConfigurations;
 		[SerializeField] private Pair<ResourceType, int>[] m_ResourcesDistribution;
+		[SerializeField] private Pair<Faction, Color>[] m_FactionUIColors;
 
 		public IActionConfigs Actions => m_Actions;
 		public IBuildingConfigs BuildingConfigs => m_BuildingConfigs;
@@ -69,6 +70,11 @@ namespace Core.Configs.Implementation
 		{
 			var sum = m_ResourcesDistribution.Sum(p => p.Object);
 			return m_ResourcesDistribution.FirstOrDefault(p => p.Type == resourceType).Object / (float)sum;
+		}
+
+		public Color GetUIColorForFaction(Faction faction)
+		{
+			return m_FactionUIColors.FirstOrDefault(p => p.Type == faction).Object;
 		}
 	}
 }

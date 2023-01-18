@@ -22,5 +22,6 @@ namespace Core.Configs
 		int GetBuildingsToWin(int playersCount);
 		Vector2Int GetStartingConfiguration(int playersCount, int playerIndex);
 		float GetResourceRatio(ResourceType resourceType);
+		Color GetUIColorForFaction(Faction faction);
 	}
 }

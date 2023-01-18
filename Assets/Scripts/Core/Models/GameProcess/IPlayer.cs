@@ -1,10 +1,14 @@
-using System.Collections.Generic;
-using Core.Models.Actors;
+using System;
+using Core.Configs.Actions.Enums;
 
 namespace Core.Models.GameProcess
 {
-	public interface IPlayer : IResourceHolder, ITurnPerformer, ITechnologyUser
+	public interface IPlayer : IResourceHolder, ITurnPerformer, ITechnologyUser, IModel
 	{
-		IEnumerable<IActor> Actors { get; }
+		event Action<ActionType> ActionSelected;
+		event Action ActionCanceled;
+
+		void SelectAction(ActionType type);
+		void CancelAction();
 	}
 }
