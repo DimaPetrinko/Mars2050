@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Core.Configs.Actions;
-using Core.Models.Enums;
 using Core.Utils;
 using UnityEngine;
 
@@ -10,17 +8,17 @@ namespace Core.Services.GameProcess.Implementation
 	public class ResourceProcessor
 	{
 		private delegate bool HandleDelegate(
-			ref Dictionary<ResourceType, int> toUse,
-			ref Dictionary<ResourceType, int> left,
+			ref ResourcePackage toUse,
+			ref ResourcePackage left,
 			ResourceCostData cost);
 
-		public (Dictionary<ResourceType, int> toUse, Dictionary<ResourceType, int> left) Process(
-			Dictionary<ResourceType, int> from, ResourceCostData[] costs)
+		public (ResourcePackage toUse, ResourcePackage left) Process(
+			ResourcePackage from, ResourceCostData[] costs)
 		{
-			var left = from.ToDictionary(p => p.Key, p => p.Value);
-			var toUse = new Dictionary<ResourceType, int>();
+			var left = ResourcePackage.Copy(from);
+			var toUse = ResourcePackage.Empty();
 
-			if (left.Sum(r => r.Value) < costs.Sum(c => c.Amount))
+			if (left.Content.Sum(r => r.Value) < costs.Sum(c => c.Amount))
 				return (toUse, left);
 
 			var handleDelegates = new Dictionary<ResourceRelation, HandleDelegate>
@@ -37,12 +35,12 @@ namespace Core.Services.GameProcess.Implementation
 		}
 
 		private bool HandleSame(
-			ref Dictionary<ResourceType, int> toUse,
-			ref Dictionary<ResourceType, int> left,
+			ref ResourcePackage toUse,
+			ref ResourcePackage left,
 			ResourceCostData cost)
 		{
 			var anyAmount = cost.Amount == 0;
-			var candidate = left
+			var candidate = left.Content
 				.Where(r =>
 					(r.Value >= cost.Amount || anyAmount)
 					&& r.Key.Contains(cost.Type))
@@ -52,19 +50,19 @@ namespace Core.Services.GameProcess.Implementation
 			var amountToTake = anyAmount
 				? candidate.Value
 				: candidate.Value - (candidate.Value - cost.Amount);
-			if (toUse.ContainsKey(candidate.Key))
-				toUse[candidate.Key] += amountToTake;
-			else toUse.Add(candidate.Key, amountToTake);
-			left[candidate.Key] -= amountToTake;
+			if (toUse.Content.ContainsKey(candidate.Key))
+				toUse.Content[candidate.Key] += amountToTake;
+			else toUse.Content.Add(candidate.Key, amountToTake);
+			left.Content[candidate.Key] -= amountToTake;
 			return true;
 		}
 
 		private bool HandleAny(
-			ref Dictionary<ResourceType, int> toUse,
-			ref Dictionary<ResourceType, int> left,
+			ref ResourcePackage toUse,
+			ref ResourcePackage left,
 			ResourceCostData cost)
 		{
-			var candidates = left
+			var candidates = left.Content
 				.Where(r => r.Value > 0 && r.Key.Contains(cost.Type))
 				.ToDictionary(p => p.Key, p => p.Value);
 			var count = 0;
@@ -77,10 +75,10 @@ namespace Core.Services.GameProcess.Implementation
 				var amountToTake = anyAmount
 					? amount
 					: amount - Mathf.Max(count - cost.Amount, 0);
-				if (toUse.ContainsKey(key))
-					toUse[key] += amountToTake;
-				else toUse.Add(key, amountToTake);
-				left[key] -= amountToTake;
+				if (toUse.Content.ContainsKey(key))
+					toUse.Content[key] += amountToTake;
+				else toUse.Content.Add(key, amountToTake);
+				left.Content[key] -= amountToTake;
 				candidates[key] -= amountToTake;
 				if (count >= cost.Amount && !anyAmount) break;
 			}

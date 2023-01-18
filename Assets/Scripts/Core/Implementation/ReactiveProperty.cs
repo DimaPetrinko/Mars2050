@@ -28,7 +28,7 @@ namespace Core.Implementation
 
 		private void DefaultSetter(T value, T currentValue, Action<T> setValue, Action triggerChanged)
 		{
-			mValue = value;
+			setValue(value);
 			if (!currentValue.Equals(value)) triggerChanged?.Invoke();
 		}
 	}

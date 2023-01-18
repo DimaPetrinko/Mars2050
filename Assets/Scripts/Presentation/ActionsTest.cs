@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Core.Configs.Actions;
 using Core.Configs.Actions.Implementation;
 using Core.Models.Enums;
 using Core.Services.GameProcess.Implementation;
+using Core.Utils;
 using UnityEngine;
 
 namespace Presentation
@@ -14,13 +14,13 @@ namespace Presentation
 
 		private void Awake()
 		{
-			var from = new Dictionary<ResourceType, int>
+			var from = new ResourcePackage(new Dictionary<ResourceType, int>
 			{
 				{ ResourceType.Water, 15 },
 				{ ResourceType.Ore, 3 },
 				{ ResourceType.Plants, 4 },
 				{ ResourceType.Electricity, 2 }
-			};
+			});
 
 			var cost = new[]
 			{
@@ -47,13 +47,13 @@ namespace Presentation
 			var resourceProcessor = new ResourceProcessor();
 
 			var (toUse, left) = resourceProcessor.Process(from, cost);
-			var leftLog = left
+			var leftLog = left.Content
 				.Select(r => $"{r.Key} {r.Value}")
 				.Aggregate((a, b) => $"{a}\n{b}");
 			leftLog = leftLog.Insert(0, "Left:\n");
 			Debug.Log(leftLog);
 
-			var correctResourcesLog = toUse
+			var correctResourcesLog = toUse.Content
 				.Select(r => $"{r.Key} {r.Value}")
 				.Aggregate((a, b) => $"{a}\n{b}");
 			correctResourcesLog = correctResourcesLog.Insert(0, "Correct:\n");

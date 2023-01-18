@@ -16,49 +16,52 @@ namespace Tests
 			public event Action<IPlaceable> PlaceableAdded;
 			public event Action<IPlaceable> PlaceableRemoved;
 			public Vector2Int Position { get; }
+
 			public bool HasPlaceable()
 			{
-				throw new NotImplementedException();
+				return false;
 			}
 
 			public bool HasPlaceable<T>() where T : IPlaceable
 			{
-				throw new NotImplementedException();
+				return false;
 			}
 
 			public bool TryGetPlaceable<T>(out T placeable) where T : IPlaceable
 			{
-				throw new NotImplementedException();
+				placeable = default;
+				return false;
 			}
 
 			public T GetPlaceable<T>() where T : IPlaceable
 			{
-				throw new NotImplementedException();
+				return default;
 			}
 
 			public IPlaceable GetLastNonUnitPlaceable()
 			{
-				throw new NotImplementedException();
+				return default;
 			}
 
 			public bool HasActor(Faction faction = Faction.Any)
 			{
-				throw new NotImplementedException();
+				return false;
 			}
 
 			public bool HasActor<T>(Faction faction = Faction.Any)
 			{
-				throw new NotImplementedException();
+				return false;
 			}
 
 			public bool TryGetActor<T>(out T placeable, Faction faction = Faction.Any)
 			{
-				throw new NotImplementedException();
+				placeable = default;
+				return false;
 			}
 
 			public T GetActor<T>(Faction faction = Faction.Any)
 			{
-				throw new NotImplementedException();
+				return default;
 			}
 
 			public void AddPlaceable(IPlaceable placeable)

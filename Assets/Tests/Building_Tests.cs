@@ -4,7 +4,6 @@ using Core.Implementation;
 using Core.Models.Actors;
 using Core.Models.Actors.Implementation;
 using Core.Models.Boards;
-using Core.Models.Boards.Implementation;
 using Core.Models.Enums;
 using NUnit.Framework;
 
@@ -49,29 +48,31 @@ namespace Tests
 			Assert.AreEqual(ResourceType.Ore, mBuilding.ResourceType);
 		}
 
-		[Test]
-		public void BuildingMaxHealth_IsSetToCombinedValue_WhenMovedToACellWithBuilding()
-		{
-			ICell cell = new Cell(0, 0);
-			IUnit unit = new Unit(Faction.Yellow, 3, 6);
-
-			cell.AddPlaceable(mBuilding);
-			cell.AddPlaceable(unit);
-
-			Assert.AreEqual(6, mBuilding.MaxHealth.Value);
-		}
-
-		[Test]
-		public void BuildingMaxHealth_IsSetToBaseValue_WhenMovedFromACellWithBuilding()
-		{
-			ICell cell = new Cell(0, 0);
-			IUnit unit = new Unit(Faction.Yellow, 3, 6);
-
-			cell.AddPlaceable(mBuilding);
-			cell.AddPlaceable(unit);
-			cell.RemovePlaceable(unit);
-
-			Assert.AreEqual(4, mBuilding.MaxHealth.Value);
-		}
+		// TODO: should be done in action processor
+		// [Test]
+		// public void BuildingMaxHealth_IsSetToCombinedValue_WhenMovedToACellWithBuilding()
+		// {
+		// 	ICell cell = new Cell(0, 0);
+		// 	IUnit unit = new Unit(Faction.Yellow, 3);
+		//
+		// 	cell.AddPlaceable(mBuilding);
+		// 	cell.AddPlaceable(unit);
+		//
+		// 	Assert.AreEqual(6, mBuilding.MaxHealth.Value);
+		// }
+		//
+		// TODO: should be done in action processor
+		// [Test]
+		// public void BuildingMaxHealth_IsSetToBaseValue_WhenMovedFromACellWithBuilding()
+		// {
+		// 	ICell cell = new Cell(0, 0);
+		// 	IUnit unit = new Unit(Faction.Yellow, 3);
+		//
+		// 	cell.AddPlaceable(mBuilding);
+		// 	cell.AddPlaceable(unit);
+		// 	cell.RemovePlaceable(unit);
+		//
+		// 	Assert.AreEqual(4, mBuilding.MaxHealth.Value);
+		// }
 	}
 }
