@@ -7,7 +7,5 @@ namespace Core.Models.GameProcess
 		Faction Faction { get; }
 		IReactiveProperty<int> Oxygen { get; }
 		IReactiveProperty<bool> HisTurn { get; }
-
-		int Roll();
 	}
 }

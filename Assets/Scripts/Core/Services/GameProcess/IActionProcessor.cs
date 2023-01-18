@@ -14,6 +14,7 @@ namespace Core.Services.GameProcess
 			ICell from,
 			ICell to,
 			ResourcePackage resourcesToUse,
+			int combinedHealth,
 			IMoveConfig config);
 
 		ActionResult Discover(
@@ -22,6 +23,12 @@ namespace Core.Services.GameProcess
 			ResourcePackage resourcesToUse,
 			IDiscoverConfig config);
 
+		// TODO: for those actions that require roll:
+		// extract roll to a separate model
+		// when rollable action is requested
+		// trigger roll
+		// the roll view will show the roll animation
+		// then proceed and call the action processor method
 		ActionResult Gather(
 			IPlayer performer,
 			IEnumerable<ICell> cells,

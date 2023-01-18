@@ -23,7 +23,6 @@ namespace Tests
 
 			public void TakeEffect()
 			{
-				throw new System.NotImplementedException();
 			}
 		}
 

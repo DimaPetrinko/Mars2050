@@ -6,15 +6,11 @@ namespace Core.Models.Actors.Implementation
 {
 	public class Unit : IUnit
 	{
-		private readonly int mCombinedHealth;
-		private IBuilding mOccupiedBuilding;
-
 		public Faction Faction { get; }
 
-		public Unit(Faction faction, int maxHealth, int combinedHealth)
+		public Unit(Faction faction, int maxHealth)
 		{
 			Faction = faction;
-			mCombinedHealth = combinedHealth;
 
 			mPlaceable = new Placeable();
 			mDamageable = new Damageable(maxHealth);
@@ -33,19 +29,6 @@ namespace Core.Models.Actors.Implementation
 		public void ChangeCell(ICell cell)
 		{
 			mPlaceable.ChangeCell(cell);
-
-			// TODO: should be done in action processor
-			if (cell == null)
-			{
-				RestoreMaxHealth();
-				mOccupiedBuilding?.RestoreMaxHealth();
-				return;
-			}
-
-			if (!cell.TryGetActor(out IBuilding building, Faction)) return;
-			mOccupiedBuilding = building;
-			MaxHealth.Value = mCombinedHealth;
-			building.MaxHealth.Value = mCombinedHealth;
 		}
 
 		#endregion

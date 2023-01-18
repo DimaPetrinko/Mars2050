@@ -6,5 +6,7 @@ namespace Core.Services.GameProcess
 	public interface ITurnProcessor
 	{
 		IEnumerable<ITurnPerformer> TurnPerformers { get; }
+
+		int Roll();
 	}
 }

@@ -106,11 +106,9 @@ namespace Presentation
 						.Magnitude())
 					.FirstOrDefault();
 				if (cell == null) continue;
+				pair.Value.CellChanged += BuildingCellChanged;
 				cell.AddPlaceable(pair.Value);
-				var resource = cell.GetPlaceable<IResource>();
-				var resourcePresenter = mResources.FirstOrDefault(p => p.Model == resource);
-				if (resourcePresenter == null) continue;
-				resourcePresenter.IsOccupied = true;
+				pair.Value.CellChanged -= BuildingCellChanged;
 			}
 
 			var faction = Faction.Red;
@@ -126,6 +124,13 @@ namespace Presentation
 
 			baseCell.RemovePlaceable(unit);
 			buildingCell.AddPlaceable(unit);
+
+			void BuildingCellChanged(ICell cell)
+			{
+				var resource = cell.GetPlaceable<IResource>();
+				var resourcePresenter = mResources.FirstOrDefault(p => p.Model == resource);
+				if (resourcePresenter != null) resourcePresenter.IsOccupied = true;
+			}
 		}
 
 		private void CreateResources()
@@ -196,7 +201,7 @@ namespace Presentation
 			{
 				for (var i = 0; i < m_GameConfig.UnitsPerPlayer; i++)
 				{
-					var unit = new Unit(faction, m_GameConfig.MaxUnitHealth, m_GameConfig.MaxBuildingWithUnitHealth);
+					var unit = new Unit(faction, m_GameConfig.MaxUnitHealth);
 					var view = Instantiate(m_UnitView);
 					var presenter = new UnitPresenter(unit, view, mBoardPresenter);
 					presenter.Initialize();

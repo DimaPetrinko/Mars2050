@@ -53,17 +53,14 @@ namespace Tests
 			public IReactiveProperty<int> MaxHealth { get; }
 			public void Damage(int damage)
 			{
-				throw new NotImplementedException();
 			}
 
 			public void Heal(int amount)
 			{
-				throw new NotImplementedException();
 			}
 
 			public void RestoreMaxHealth()
 			{
-				throw new NotImplementedException();
 			}
 		}
 

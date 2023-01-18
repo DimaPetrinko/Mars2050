@@ -5,14 +5,15 @@ using Core.Configs.Actions;
 using Core.Configs.Buildings;
 using Core.Models.Actors;
 using Core.Models.Boards;
+using Core.Models.Enums;
 using Core.Models.GameProcess;
 using Core.Utils;
 
 namespace Core.Services.GameProcess.Implementation
 {
-	public interface IFactory<out T, in TParam1>
+	public interface IFactory<out T, in TParam1, in TParam2>
 	{
-		T Create(TParam1 param1);
+		T Create(TParam1 param1, TParam2 param2);
 	}
 
 	public interface IActionResult
@@ -35,19 +36,23 @@ namespace Core.Services.GameProcess.Implementation
 
 	public class ActionProcessor : IActionProcessor
 	{
-		private IFactory<IBuilding, IBuildingConfig> mBuildingFactory;
+		private IFactory<IBuilding, Faction, IBuildingConfig> mBuildingFactory;
 
 		public ActionResult Move(
 			IPlayer performer,
 			ICell from,
 			ICell to,
 			ResourcePackage resourcesToUse,
+			int combinedHealth,
 			IMoveConfig config)
 		{
 			if (!EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
 			if (!from.TryGetActor(out IUnit movable, performer.Faction)) return ActionResult.NoUnitOfCorrectFactionInCell;
-			if (!config.CanMoveToOccupiedCell && to.HasPlaceable<IMovable>()) return ActionResult.CellIsOccupied;
+			if (!config.CanMoveToOccupiedCell
+			    && to.HasPlaceable<IMovable>()
+			    && !to.HasPlaceable<IBaseBuilding>())
+				return ActionResult.CellIsOccupied;
 			if (!config.CanMoveToDamagedBuilding
 			    && to.TryGetPlaceable(out IBuilding building)
 			    && building.Health.Value < building.MaxHealth.Value)
@@ -61,6 +66,14 @@ namespace Core.Services.GameProcess.Implementation
 			{
 				from.RemovePlaceable(movable);
 				to.AddPlaceable(movable);
+
+				if (from.TryGetPlaceable(out IBuilding fromBuilding)) fromBuilding.RestoreMaxHealth();
+				if (to.TryGetPlaceable(out IBuilding toBuilding))
+				{
+					toBuilding.MaxHealth.Value = combinedHealth;
+					movable.MaxHealth.Value = combinedHealth;
+				}
+				else movable.RestoreMaxHealth();
 			});
 
 			return ActionResult.Success;
@@ -142,7 +155,7 @@ namespace Core.Services.GameProcess.Implementation
 			ApplyAction(performer, config.Oxygen, toUse, () =>
 			{
 				performer.UseResources(buildCost);
-				var building = mBuildingFactory.Create(buildingConfig);
+				var building = mBuildingFactory.Create(performer.Faction, buildingConfig);
 				cell.AddPlaceable(building);
 			});
 
