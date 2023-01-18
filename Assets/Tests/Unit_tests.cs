@@ -4,7 +4,6 @@ using Core.Implementation;
 using Core.Models.Actors;
 using Core.Models.Actors.Implementation;
 using Core.Models.Boards;
-using Core.Models.Boards.Implementation;
 using Core.Models.Enums;
 using NUnit.Framework;
 
