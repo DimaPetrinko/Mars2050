@@ -13,7 +13,7 @@ namespace Core.Configs
 		int BoardRadius { get; }
 		float CellRadius { get; }
 		int UnitsPerPlayer { get; }
-		int MaxRoll { get; }
+		byte MaxRoll { get; }
 		int MaxResources { get; }
 		int MaxUnitHealth { get; }
 		int MaxBuildingHealth { get; }

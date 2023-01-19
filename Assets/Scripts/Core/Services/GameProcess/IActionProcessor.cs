@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Core.Configs.Actions;
 using Core.Models.Boards;
+using Core.Models.Enums;
 using Core.Models.GameProcess;
-using Core.Services.GameProcess.Implementation;
 using Core.Utils;
 
 namespace Core.Services.GameProcess

@@ -1,6 +1,6 @@
 using System;
-using Core.Configs.Actions.Enums;
 using Core.Configs.Actions.Implementation;
+using Core.Models.Enums;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -32,7 +32,7 @@ namespace Core.Configs.Implementation
 		[SerializeField] private int m_BoardRadius;
 		[SerializeField] private float m_CellRadius;
 		[SerializeField] private int m_UnitsPerPlayer;
-		[SerializeField] private int m_MaxRoll;
+		[SerializeField] private byte m_MaxRoll;
 		[SerializeField] private int m_MaxResources;
 		[SerializeField] private int m_MaxUnitHealth;
 		[SerializeField] private int m_MaxBuildingHealth;
@@ -48,7 +48,7 @@ namespace Core.Configs.Implementation
 		public int BoardRadius => m_BoardRadius;
 		public float CellRadius => m_CellRadius;
 		public int UnitsPerPlayer => m_UnitsPerPlayer;
-		public int MaxRoll => m_MaxRoll;
+		public byte MaxRoll => m_MaxRoll;
 		public int MaxResources => m_MaxResources;
 		public int MaxUnitHealth => m_MaxUnitHealth;
 		public int MaxBuildingHealth => m_MaxBuildingHealth;

@@ -1,4 +1,4 @@
-using Core.Configs.Actions.Enums;
+using Core.Models.Enums;
 using Core.Utils;
 
 namespace Core.Configs.Actions

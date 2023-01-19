@@ -9,31 +9,12 @@ using Core.Models.Enums;
 using Core.Models.GameProcess;
 using Core.Utils;
 
+// TODO: turn each action into a model
+// TODO: create action presenter and view
+// TODO: action view would contain ui to gather necessary data (resources, players) to perform the action
+// TODO: action presenter would communicate with the board to get clicks from cells
 namespace Core.Services.GameProcess.Implementation
 {
-	public interface IFactory<out T, in TParam1, in TParam2>
-	{
-		T Create(TParam1 param1, TParam2 param2);
-	}
-
-	public interface IActionResult
-	{
-	}
-	public enum ActionResult
-	{
-		Success,
-		NotEnoughOxygen,
-		NotEnoughResources,
-		NoResourcesProvided,
-		NoUnitOfCorrectFactionInCell,
-		CellIsOccupied,
-		CellHasDamagedBuilding,
-		ExceedsRange,
-		NoResourceInCell,
-		ResourceAlreadyDiscovered,
-		CellIsOccupiedByBuilding,
-	}
-
 	public class ActionProcessor : IActionProcessor
 	{
 		private IFactory<IBuilding, Faction, IBuildingConfig> mBuildingFactory;

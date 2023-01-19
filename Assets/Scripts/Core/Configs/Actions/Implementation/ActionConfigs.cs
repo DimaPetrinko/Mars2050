@@ -1,5 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
-using Core.Configs.Actions.Enums;
+using Core.Models.Enums;
 using UnityEngine;
 
 namespace Core.Configs.Actions.Implementation
@@ -9,9 +10,21 @@ namespace Core.Configs.Actions.Implementation
 	{
 		[SerializeField] private ActionConfig[] m_Actions;
 
+		private Dictionary<ActionType, IActionConfig> mActionConfigs;
+
+		private void Awake()
+		{
+			mActionConfigs = m_Actions.ToDictionary(a => a.Type, a => (IActionConfig)a);
+		}
+
 		public TConfig GetConfig<TConfig>(ActionType actionType) where TConfig : IActionConfig
 		{
-			return (TConfig)(IActionConfig)m_Actions.FirstOrDefault(c => c.Type == actionType);
+			return (TConfig)GetConfig(actionType);
+		}
+
+		public IActionConfig GetConfig(ActionType actionType)
+		{
+			return mActionConfigs.TryGetValue(actionType, out var config) ? config : null;
 		}
 	}
 }

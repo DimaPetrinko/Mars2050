@@ -1,4 +1,4 @@
-namespace Core.Configs.Actions.Enums
+namespace Core.Models.Enums
 {
 	public enum ActionType
 	{

@@ -1,4 +1,4 @@
-using Core.Configs.Actions.Enums;
+using Core.Models.Enums;
 using UnityEngine;
 
 namespace Core.Configs.Actions.Implementation
