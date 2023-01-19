@@ -18,12 +18,6 @@ namespace Core.Models.GameProcess.Implementation
 			Faction = faction;
 		}
 
-		// TODO: move to turn processor
-		// public int Roll()
-		// {
-		// 	return UnityEngine.Random.Range(0, mMaxRoll + 1);
-		// }
-
 		private void OxygenSetter(int value, int currentValue, Action<int> setValue, Action triggerChanged)
 		{
 			value = Mathf.Max(value, 0);

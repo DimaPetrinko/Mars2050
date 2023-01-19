@@ -34,17 +34,5 @@ namespace Tests
 
 			Assert.AreEqual(0, mTurnPerformer.Oxygen.Value);
 		}
-
-		// TODO: move to turn processor
-		// [Test]
-		// public void Roll_ReturnsValueBetween0AndMaxRollBothInclusive()
-		// {
-		// 	for (var i = 0; i < 1000; i++)
-		// 	{
-		// 		var roll = mTurnPerformer.Roll();
-		// 		Assert.GreaterOrEqual(roll, 0);
-		// 		Assert.LessOrEqual(roll, 6);
-		// 	}
-		// }
 	}
 }
