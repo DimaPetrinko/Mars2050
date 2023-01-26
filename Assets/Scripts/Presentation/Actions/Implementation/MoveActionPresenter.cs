@@ -121,7 +121,15 @@ namespace Presentation.Actions.Implementation
 			else
 			{
 				mRepeat = true;
-				if (!Model.Repeatable) OnViewClosed();
+				switch (Model.Repeatability)
+				{
+					case ActionRepeatability.None:
+						OnViewClosed();
+						break;
+					case ActionRepeatability.Continuable:
+						ResetData();
+						break;
+				}
 			}
 		}
 

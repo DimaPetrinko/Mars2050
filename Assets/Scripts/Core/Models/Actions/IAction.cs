@@ -8,7 +8,7 @@ namespace Core.Models.Actions
 	{
 		ActionType Type { get; }
 		IReactiveProperty<bool> Selected { get; }
-		bool Repeatable { get; }
+		ActionRepeatability Repeatability { get; }
 		bool ResourcesRequired { get; }
 		IPlayer Performer { set; }
 		ResourcePackage Resources { set; }

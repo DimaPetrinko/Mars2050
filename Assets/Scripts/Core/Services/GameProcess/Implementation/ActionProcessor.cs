@@ -152,7 +152,8 @@ namespace Core.Services.GameProcess.Implementation
 			bool repeat,
 			IAttackConfig config)
 		{
-			if (!(repeat && config.Repeatable) && !EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
+			if (!(repeat && config.Repeatability == ActionRepeatability.Repeatable) && !EnoughOxygen(performer, config))
+				return ActionResult.NotEnoughOxygen;
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
 			if (!from.HasActor<IUnit>(performer.Faction)) return ActionResult.NoMovableActorOfCorrectFactionInCell;
 			if (!to.TryGetActor(out IDamageable other) && ((IActor)other).Faction == performer.Faction)
@@ -177,7 +178,8 @@ namespace Core.Services.GameProcess.Implementation
 			bool repeat,
 			IHealConfig config)
 		{
-			if (!(repeat && config.Repeatable) && !EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
+			if (!(repeat && config.Repeatability == ActionRepeatability.Repeatable) && !EnoughOxygen(performer, config))
+				return ActionResult.NotEnoughOxygen;
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
 			if (!cell.TryGetActor(out IDamageable damageable) && ((IActor)damageable).Faction != performer.Faction)
 				return ActionResult.NoMovableActorOfCorrectFactionInCell;
@@ -201,7 +203,8 @@ namespace Core.Services.GameProcess.Implementation
 			ITradeConfig config
 			)
 		{
-			if (!(repeat && config.Repeatable) && !EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
+			if (!(repeat && config.Repeatability == ActionRepeatability.Repeatable) && !EnoughOxygen(performer, config))
+				return ActionResult.NotEnoughOxygen;
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
 			if (resourcesToSell.Amount == 0) return ActionResult.NoResourcesProvided;
 			if (resourcesToBuy.Amount == 0) return ActionResult.NoResourcesProvided;
@@ -228,7 +231,8 @@ namespace Core.Services.GameProcess.Implementation
 			bool repeat,
 			ITradeConfig config)
 		{
-			if (!(repeat && config.Repeatable) && !EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
+			if (!(repeat && config.Repeatability == ActionRepeatability.Repeatable) && !EnoughOxygen(performer, config))
+				return ActionResult.NotEnoughOxygen;
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
 			if (!EnoughResources(other, resourcesToBuy)) return ActionResult.NotEnoughResources;
 			if (resourcesToSell.Amount == 0) return ActionResult.NoResourcesProvided;

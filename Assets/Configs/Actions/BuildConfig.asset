@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BuildConfig
   m_EditorClassIdentifier: 
   m_DisplayName: Build
-  m_Repeatable: 0
+  m_Repeatability: 0
   m_Oxygen: 3
   m_Resources: []
   m_RewardWithTechnology: 1

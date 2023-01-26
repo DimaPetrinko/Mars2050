@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerTradeConfig
   m_EditorClassIdentifier: 
   m_DisplayName: Player trade
-  m_Repeatable: 1
+  m_Repeatability: 2
   m_Oxygen: 0
   m_Resources:
   - Amount: 0

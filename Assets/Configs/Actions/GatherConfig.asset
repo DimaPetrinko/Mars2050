@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GatherConfig
   m_EditorClassIdentifier: 
   m_DisplayName: Gather
-  m_Repeatable: 0
+  m_Repeatability: 2
   m_Oxygen: 2
   m_Resources: []
   m_RollDefinition:

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: DiscoverAction
   m_EditorClassIdentifier: 
   m_DisplayName: Discover
-  m_Repeatable: 0
+  m_Repeatability: 0
   m_Oxygen: 1
   m_Resources: []

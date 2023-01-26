@@ -44,7 +44,7 @@ namespace Tests
 		{
 			public ActionType Type { get; set; }
 			public string DisplayName { get; set; }
-			public bool Repeatable { get; set; }
+			public ActionRepeatability Repeatability { get; set; }
 			public byte Oxygen { get; set; }
 			public ResourceCostData[] Resources { get; set; }
 			public int MoveRange { get; set; }
@@ -515,7 +515,7 @@ namespace Tests
 			performer.Oxygen.Value = 5;
 			var config = new MockMoveConfig
 			{
-				Repeatable = false,
+				Repeatability = ActionRepeatability.None,
 				Oxygen = 1,
 				Resources = new ResourceCostData[]
 					{ },
@@ -546,7 +546,7 @@ namespace Tests
 			performer.Oxygen.Value = 5;
 			var config = new MockMoveConfig
 			{
-				Repeatable = true,
+				Repeatability = ActionRepeatability.Repeatable,
 				Oxygen = 1,
 				Resources = new ResourceCostData[]
 					{ },
@@ -577,7 +577,7 @@ namespace Tests
 			performer.Oxygen.Value = 5;
 			var config = new MockMoveConfig
 			{
-				Repeatable = true,
+				Repeatability = ActionRepeatability.Repeatable,
 				Oxygen = 1,
 				Resources = new ResourceCostData[]
 				{

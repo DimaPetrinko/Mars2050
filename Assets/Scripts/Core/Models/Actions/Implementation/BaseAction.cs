@@ -22,7 +22,7 @@ namespace Core.Models.Actions.Implementation
 
 		public ActionType Type => mConfig.Type;
 		public IReactiveProperty<bool> Selected { get; }
-		public bool Repeatable => mConfig.Repeatable;
+		public ActionRepeatability Repeatability => mConfig.Repeatability;
 		public bool ResourcesRequired => mConfig.Resources.Sum(r => r.Amount) > 0;
 
 		public IPlayer Performer
@@ -89,7 +89,7 @@ namespace Core.Models.Actions.Implementation
 
 		public ActionResult CheckOxygen()
 		{
-			mCheckAndUseOxygen = !(mRepeat && mConfig.Repeatable);
+			mCheckAndUseOxygen = !(mRepeat && mConfig.Repeatability == ActionRepeatability.Repeatable);
 			if (mCheckAndUseOxygen && Performer.Oxygen.Value < mConfig.Oxygen) return ActionResult.NotEnoughOxygen;
 			return ActionResult.Success;
 		}

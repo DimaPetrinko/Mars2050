@@ -7,7 +7,7 @@ namespace Core.Configs.Actions
 	{
 		ActionType Type { get; }
 		public string DisplayName { get; }
-		bool Repeatable { get; }
+		ActionRepeatability Repeatability { get; }
 		byte Oxygen { get; }
 		ResourceCostData[] Resources { get; }
 	}
