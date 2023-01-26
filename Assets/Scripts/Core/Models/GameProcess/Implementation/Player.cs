@@ -8,29 +8,11 @@ namespace Core.Models.GameProcess.Implementation
 {
 	public class Player : IPlayer
 	{
-		public event Action<ActionType> ActionSelected;
-		public event Action ActionCanceled;
-
-		private ActionType? mSelectedAction;
-
 		public Player(Faction faction)
 		{
 			mResourceHolder = new ResourceHolder();
 			mTurnPerformer = new TurnPerformer(faction);
 			mTechnologyUser = new TechnologyUser();
-		}
-
-		public void SelectAction(ActionType type)
-		{
-			mSelectedAction = type;
-			ActionSelected?.Invoke(mSelectedAction.Value);
-		}
-
-		public void CancelAction()
-		{
-			var hadValue = mSelectedAction.HasValue;
-			mSelectedAction = null;
-			if (hadValue) ActionCanceled?.Invoke();
 		}
 
 		#region IResourceHolder
@@ -72,7 +54,7 @@ namespace Core.Models.GameProcess.Implementation
 		private readonly ITurnPerformer mTurnPerformer;
 
 		public Faction Faction => mTurnPerformer.Faction;
-		public IReactiveProperty<int> Oxygen => mTurnPerformer.Oxygen;
+		public IReactiveProperty<short> Oxygen => mTurnPerformer.Oxygen;
 		public IReactiveProperty<bool> HisTurn => mTurnPerformer.HisTurn;
 
 		#endregion

@@ -4,8 +4,8 @@ namespace Core.Models.Enums
 	{
 		Move,
 		Discover,
-		Build,
 		Gather,
+		Build,
 		Attack,
 		Heal,
 		Trade,

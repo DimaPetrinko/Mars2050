@@ -6,14 +6,15 @@ namespace Presentation.GameProcess.Implementation
 	internal class DiceView : MonoBehaviour, IDiceView
 	{
 		[SerializeField] private DiceCube m_DiceCube;
-		[SerializeField] private Button m_OkButton;
-		[SerializeField] private Button m_SkipButton;
+		[SerializeField] private Button m_Button;
+
+		private bool mRolled;
 
 		public bool Active
 		{
 			set
 			{
-				m_OkButton.gameObject.SetActive(false);
+				mRolled = false;
 				gameObject.SetActive(value);
 			}
 		}
@@ -29,24 +30,24 @@ namespace Presentation.GameProcess.Implementation
 
 		private void Awake()
 		{
-			m_OkButton.onClick.AddListener(OnOkButtonClicked);
-			m_SkipButton.onClick.AddListener(OnSkipButtonClicked);
+			m_Button.onClick.AddListener(OnButtonClicked);
 		}
 
 		private void PlayRollAnimation(byte roll)
 		{
-			m_DiceCube.PlayAnimation(roll, () => m_OkButton.gameObject.SetActive(true));
+			m_DiceCube.PlayAnimation(roll, () => mRolled = true);
 		}
 
 		private void OnOkButtonClicked()
 		{
-			m_OkButton.gameObject.SetActive(false);
+			mRolled = false;
 			m_DiceCube.Hide(() => Active = false);
 		}
 
-		private void OnSkipButtonClicked()
+		private void OnButtonClicked()
 		{
-			m_DiceCube.Skip();
+			if (mRolled) OnOkButtonClicked();
+			else m_DiceCube.Skip();
 		}
 	}
 }

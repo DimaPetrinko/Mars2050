@@ -7,20 +7,21 @@ namespace Core.Models.GameProcess.Implementation
 {
 	public class TurnPerformer : ITurnPerformer
 	{
+		// TODO: must not be able to end turn if the total amount of resources is greater than the value in config
 		public Faction Faction { get; }
-		public IReactiveProperty<int> Oxygen { get; }
+		public IReactiveProperty<short> Oxygen { get; }
 		public IReactiveProperty<bool> HisTurn { get; }
 
 		public TurnPerformer(Faction faction)
 		{
-			Oxygen = new ReactiveProperty<int>(0, OxygenSetter);
+			Oxygen = new ReactiveProperty<short>(0, OxygenSetter);
 			HisTurn = new ReactiveProperty<bool>();
 			Faction = faction;
 		}
 
-		private void OxygenSetter(int value, int currentValue, Action<int> setValue, Action triggerChanged)
+		private void OxygenSetter(short value, short currentValue, Action<short> setValue, Action triggerChanged)
 		{
-			value = Mathf.Max(value, 0);
+			value = (short)Mathf.Max(value, 0);
 			setValue(value);
 			if (currentValue != value) triggerChanged();
 		}

@@ -7,6 +7,7 @@ namespace Core.Implementation
 		public delegate void ReactiveSetter(T value, T currentValue, Action<T> setValue, Action triggerChanged);
 
 		public event Action<T> Changed;
+		public event Action<T> Updated;
 
 		private T mValue;
 		private readonly ReactiveSetter mSetter;
@@ -17,6 +18,7 @@ namespace Core.Implementation
 			set
 			{
 				mSetter(value, mValue, v => mValue = v, () => Changed?.Invoke(mValue));
+				Updated?.Invoke(mValue);
 			}
 		}
 

@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e645f3bbca7a4846aea8b59ef659619a, type: 3}
   m_Name: AttackConfig
   m_EditorClassIdentifier: 
+  m_DisplayName: Attack
+  m_Repeatable: 1
   m_Oxygen: 2
   m_Resources:
   - Amount: 3
     Relation: 0
     Type: -1
-  m_Repeatable: 1
   m_AttackRange: 1
   m_RollDefinition:
   - Range:

@@ -8,8 +8,6 @@ namespace Presentation.GameProcess.Implementation
 {
 	internal class PlayerPresenter : IPlayerPresenter
 	{
-		private ActionType? mSelectedAction;
-
 		public IPlayer Model { get; }
 		public IPlayerView View { get; }
 
@@ -24,7 +22,6 @@ namespace Presentation.GameProcess.Implementation
 			Model.TechnologyAdded += OnTechnologyAdded;
 			Model.TechnologySpent += OnTechnologySpent;
 
-			View.ActionClicked += OnActionClicked;
 			View.EndTurnClicked += OnEndTurnClicked;
 		}
 
@@ -40,10 +37,9 @@ namespace Presentation.GameProcess.Implementation
 		private void OnHisTurnChanged(bool value)
 		{
 			View.Active = value;
-			if (!value) CancelAction();
 		}
 
-		private void OnOxygenChanged(int value)
+		private void OnOxygenChanged(short value)
 		{
 			View.Oxygen = value;
 		}
@@ -65,37 +61,9 @@ namespace Presentation.GameProcess.Implementation
 			throw new System.NotImplementedException();
 		}
 
-		private void OnActionClicked(ActionType type)
-		{
-			if (mSelectedAction.HasValue)
-			{
-				if (mSelectedAction == type)
-				{
-					CancelAction();
-					return;
-				}
-			}
-			else SelectAction(type);
-		}
-
-
 		private void OnEndTurnClicked()
 		{
 			Model.HisTurn.Value = false;
-		}
-
-		private void SelectAction(ActionType type)
-		{
-			mSelectedAction = type;
-			View.SelectedAction = mSelectedAction.Value;
-			Model.SelectAction(mSelectedAction.Value);
-		}
-
-		private void CancelAction()
-		{
-			mSelectedAction = null;
-			View.SelectedAction = null;
-			Model.CancelAction();
 		}
 	}
 }

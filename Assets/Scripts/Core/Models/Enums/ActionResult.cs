@@ -2,16 +2,20 @@ namespace Core.Models.Enums
 {
 	public enum ActionResult
 	{
-		Success,
+		PerformerNotSet,
+		NotSelected,
 		NotEnoughOxygen,
 		NotEnoughResources,
 		NoResourcesProvided,
-		NoUnitOfCorrectFactionInCell,
+		NoMovableInCell,
+		NoMovableActorOfCorrectFactionInCell,
 		CellIsOccupied,
 		CellHasDamagedBuilding,
 		ExceedsRange,
 		NoResourceInCell,
 		ResourceAlreadyDiscovered,
-		CellIsOccupiedByBuilding,
+		SameCell,
+		NoCellProvided,
+		Success
 	}
 }

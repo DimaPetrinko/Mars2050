@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 684678cad8494b91900b382d3a926672, type: 3}
   m_Name: TradeConfig
   m_EditorClassIdentifier: 
+  m_DisplayName: Trade
+  m_Repeatable: 1
   m_Oxygen: 0
   m_Resources:
   - Amount: 4
     Relation: 0
     Type: -1
+  m_WithPlayer: 0
   m_PurchaseResource:
     Amount: 1
     Relation: 0

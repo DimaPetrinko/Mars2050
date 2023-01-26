@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Core.Models.Boards;
 using UnityEngine;
@@ -6,6 +7,8 @@ namespace Presentation.Boards.Implementation
 {
 	internal class BoardPresenter : IBoardPresenter
 	{
+		public event Action<ICell> CellClicked;
+
 		private readonly ICellPresenter[] mCells;
 		private readonly IPresenterManager mPresenterManager;
 
@@ -27,9 +30,11 @@ namespace Presentation.Boards.Implementation
 			for (var i = 0; i < mCells.Length; i++)
 			{
 				var view = View.CreateCell();
-				mCells[i] = new CellPresenter(cells[i], view, mPresenterManager);
-				mCells[i].Initialize();
-				mPresenterManager.Register(cells[i], mCells[i]);
+				ICellPresenter presenter = new CellPresenter(cells[i], view, mPresenterManager);
+				presenter.Initialize();
+				presenter.Clicked += OnCellClicked;
+				mPresenterManager.Register(cells[i], presenter);
+				mCells[i] = presenter;
 			}
 		}
 
@@ -49,6 +54,11 @@ namespace Presentation.Boards.Implementation
 		private ICellPresenter GetCellPresenter(ICell cell)
 		{
 			return mCells.FirstOrDefault(c => c.Model == cell);
+		}
+
+		private void OnCellClicked(ICell cell)
+		{
+			CellClicked?.Invoke(cell);
 		}
 	}
 }

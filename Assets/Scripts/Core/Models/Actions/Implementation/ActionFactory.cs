@@ -1,4 +1,3 @@
-using System;
 using Core.Configs;
 using Core.Configs.Actions;
 using Core.Models.Enums;
@@ -22,12 +21,12 @@ namespace Core.Models.Actions.Implementation
 			mDice = dice;
 		}
 
-		public IAction Create(IPlayer performer, ActionType type)
+		public IAction Create(ActionType type)
 		{
 			var config = mActionConfigs.GetConfig(type);
 			return type switch
 			{
-				ActionType.Move => new MoveAction(performer, config, mGameConfig.MaxBuildingWithUnitHealth),
+				ActionType.Move => new MoveAction((IMoveConfig)config, mGameConfig.MaxBuildingWithUnitHealth),
 				// ActionType.Discover => new DiscoverAction(performer, config),
 				// ActionType.Gather => new GatherAction(performer, config, mDice),
 				// ActionType.Build => new BuildAction(performer, config),
@@ -35,7 +34,7 @@ namespace Core.Models.Actions.Implementation
 				// ActionType.Heal => new HealAction(performer, config),
 				// ActionType.Trade => new TradeAction(performer, config),
 				// ActionType.PlayerTrade => new PlayerTradeAction(performer, config),
-				_ => throw new ArgumentOutOfRangeException()
+				_ => null
 			};
 		}
 	}

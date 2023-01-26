@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d667901ba684413887e5da70be4df39c, type: 3}
   m_Name: GatherConfig
   m_EditorClassIdentifier: 
+  m_DisplayName: Gather
+  m_Repeatable: 0
   m_Oxygen: 2
   m_Resources: []
   m_RollDefinition:

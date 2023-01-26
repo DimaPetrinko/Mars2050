@@ -64,7 +64,7 @@ namespace Core.Models.Boards.Implementation
 
 		public bool TryGetActor<T>(out T placeable, Faction faction = Faction.Any)
 		{
-			placeable = GetActor<T>();
+			placeable = GetActor<T>(faction);
 			return placeable != null;
 		}
 

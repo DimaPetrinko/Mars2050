@@ -6,7 +6,7 @@ namespace Core.Utils
 	{
 		public static bool InRange(this Vector2Int position, int range)
 		{
-			return Magnitude(position) <= range;
+			return position.Magnitude() <= range;
 		}
 
 		public static int Magnitude(this Vector2Int vector)

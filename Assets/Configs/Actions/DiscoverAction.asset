@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01419da81d634333977b9cdff8c57fce, type: 3}
   m_Name: DiscoverAction
   m_EditorClassIdentifier: 
+  m_DisplayName: Discover
+  m_Repeatable: 0
   m_Oxygen: 1
   m_Resources: []

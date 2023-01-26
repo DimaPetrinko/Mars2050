@@ -68,6 +68,33 @@ namespace Tests
 		}
 
 		[Test]
+		public void Updated_IsTriggered_EveryTime()
+		{
+			var triggered = false;
+			var property = new ReactiveProperty<int>();
+
+			property.Value = 5;
+			property.Updated += _ => triggered = true;
+			property.Value = 5;
+
+			Assert.IsTrue(triggered);
+		}
+
+		[Test]
+		public void Updated_IsTriggeredWithCorrectValue()
+		{
+			var changedValue = 0;
+			var property = new ReactiveProperty<int>();
+
+			property.Value = 4;
+			property.Updated += v => changedValue = v;
+			property.Value = 4;
+
+			Assert.AreEqual(4, changedValue);
+
+		}
+
+		[Test]
 		public void CustomSetter_IsCalled_WhenProvided()
 		{
 			var called = false;

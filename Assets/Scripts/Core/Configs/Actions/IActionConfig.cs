@@ -6,7 +6,9 @@ namespace Core.Configs.Actions
 	public interface IActionConfig
 	{
 		ActionType Type { get; }
-		int Oxygen { get; }
+		public string DisplayName { get; }
+		bool Repeatable { get; }
+		byte Oxygen { get; }
 		ResourceCostData[] Resources { get; }
 	}
 }

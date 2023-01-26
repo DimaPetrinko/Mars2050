@@ -30,7 +30,7 @@ namespace Tests
 		[Test]
 		public void Oxygen_DoesNotGoBeyond0()
 		{
-			mTurnPerformer.Oxygen.Value = -3;
+			mTurnPerformer.Oxygen.Value -= 3;
 
 			Assert.AreEqual(0, mTurnPerformer.Oxygen.Value);
 		}

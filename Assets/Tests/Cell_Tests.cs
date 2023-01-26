@@ -87,7 +87,7 @@ namespace Tests
 		[Test]
 		public void HasPlaceable_ReturnsFalse_WhenNoneAdded()
 		{
-			Assert.False(mCell.HasPlaceable());
+			Assert.IsFalse(mCell.HasPlaceable());
 		}
 
 		[Test]
@@ -95,7 +95,7 @@ namespace Tests
 		{
 			mCell.AddPlaceable(new MockPlaceable());
 
-			Assert.True(mCell.HasPlaceable());
+			Assert.IsTrue(mCell.HasPlaceable());
 		}
 
 		[Test]
@@ -103,7 +103,7 @@ namespace Tests
 		{
 			mCell.AddPlaceable(new MockActor());
 
-			Assert.True(mCell.HasPlaceable<IActor>());
+			Assert.IsTrue(mCell.HasPlaceable<IActor>());
 		}
 
 		[Test]
@@ -111,7 +111,7 @@ namespace Tests
 		{
 			mCell.AddPlaceable(new MockActor());
 
-			Assert.False(mCell.HasPlaceable<IResource>());
+			Assert.IsFalse(mCell.HasPlaceable<IResource>());
 		}
 
 		[Test]
@@ -137,13 +137,13 @@ namespace Tests
 			var mockPlaceable = new MockPlaceable();
 			mCell.AddPlaceable(mockPlaceable);
 
-			Assert.True(mCell.TryGetPlaceable(out IPlaceable result));
+			Assert.IsTrue(mCell.TryGetPlaceable(out IPlaceable result));
 		}
 
 		[Test]
 		public void TryGetPlaceable_ReturnsFalse_WhenNoneAdded()
 		{
-			Assert.False(mCell.TryGetPlaceable(out IPlaceable result));
+			Assert.IsFalse(mCell.TryGetPlaceable(out IPlaceable result));
 		}
 
 		[Test]
@@ -201,7 +201,7 @@ namespace Tests
 		[Test]
 		public void HasActor_ReturnsFalse_WhenNoneAdded()
 		{
-			Assert.False(mCell.HasActor());
+			Assert.IsFalse(mCell.HasActor());
 		}
 
 		[Test]
@@ -209,7 +209,7 @@ namespace Tests
 		{
 			mCell.AddPlaceable(new MockPlaceable());
 
-			Assert.False(mCell.HasActor());
+			Assert.IsFalse(mCell.HasActor());
 		}
 
 		[Test]
@@ -217,7 +217,7 @@ namespace Tests
 		{
 			mCell.AddPlaceable(new MockActor());
 
-			Assert.True(mCell.HasActor());
+			Assert.IsTrue(mCell.HasActor());
 		}
 
 		[Test]
@@ -225,7 +225,7 @@ namespace Tests
 		{
 			mCell.AddPlaceable(new MockActor());
 
-			Assert.True(mCell.HasActor<IActor>());
+			Assert.IsTrue(mCell.HasActor<IActor>());
 		}
 
 		[Test]
@@ -233,7 +233,7 @@ namespace Tests
 		{
 			mCell.AddPlaceable(new MockActor());
 
-			Assert.False(mCell.HasActor<IResource>());
+			Assert.IsFalse(mCell.HasActor<IResource>());
 		}
 
 		[Test]
@@ -241,7 +241,7 @@ namespace Tests
 		{
 			mCell.AddPlaceable(new MockPlaceable());
 
-			Assert.False(mCell.HasActor<IActor>());
+			Assert.IsFalse(mCell.HasActor<IActor>());
 		}
 
 		[Test]
@@ -250,7 +250,7 @@ namespace Tests
 			var mockActor = new MockActor(Faction.Yellow);
 			mCell.AddPlaceable(mockActor);
 
-			Assert.True(mCell.HasActor(Faction.Yellow));
+			Assert.IsTrue(mCell.HasActor(Faction.Yellow));
 		}
 
 		[Test]
@@ -259,7 +259,7 @@ namespace Tests
 			var mockActor = new MockActor(Faction.Yellow);
 			mCell.AddPlaceable(mockActor);
 
-			Assert.False(mCell.HasActor(Faction.Blue));
+			Assert.IsFalse(mCell.HasActor(Faction.Blue));
 		}
 
 		[Test]
@@ -268,7 +268,7 @@ namespace Tests
 			var mockActor = new MockActor(Faction.Yellow);
 			mCell.AddPlaceable(mockActor);
 
-			Assert.True(mCell.HasActor<IActor>(Faction.Yellow));
+			Assert.IsTrue(mCell.HasActor<IActor>(Faction.Yellow));
 		}
 
 		[Test]
@@ -277,7 +277,7 @@ namespace Tests
 			var mockActor = new MockActor(Faction.Yellow);
 			mCell.AddPlaceable(mockActor);
 
-			Assert.False(mCell.HasActor<IActor>(Faction.Blue));
+			Assert.IsFalse(mCell.HasActor<IActor>(Faction.Blue));
 		}
 
 		[Test]
@@ -298,18 +298,38 @@ namespace Tests
 		}
 
 		[Test]
+		public void GetActorWithFaction_ReturnsActor_WhenActorOfCorrectFactionAdded()
+		{
+			var mockActor = new MockActor(Faction.Red);
+			mCell.AddPlaceable(mockActor);
+
+			var result = mCell.GetActor<IActor>(Faction.Red);
+			Assert.AreEqual(mockActor, result);
+		}
+
+		[Test]
+		public void GetActorWithFaction_DoesNotReturnActor_WhenActorOfOtherFactionAdded()
+		{
+			var mockActor = new MockActor(Faction.Red);
+			mCell.AddPlaceable(mockActor);
+
+			var result = mCell.GetActor<IActor>(Faction.Blue);
+			Assert.IsNull(result);
+		}
+
+		[Test]
 		public void TryGetActor_ReturnsTrue_WhenActorAdded()
 		{
 			var mockActor = new MockActor();
 			mCell.AddPlaceable(mockActor);
 
-			Assert.True(mCell.TryGetActor(out IActor result));
+			Assert.IsTrue(mCell.TryGetActor(out IActor result));
 		}
 
 		[Test]
 		public void TryGetActor_ReturnsFalse_WhenNoneAdded()
 		{
-			Assert.False(mCell.TryGetActor(out IActor result));
+			Assert.IsFalse(mCell.TryGetActor(out IActor result));
 		}
 
 		[Test]
@@ -330,6 +350,44 @@ namespace Tests
 		}
 
 		[Test]
+		public void TryGetActorWithFaction_ReturnsTrue_WhenActorOfCorrectFactionAdded()
+		{
+			var mockActor = new MockActor(Faction.Red);
+			mCell.AddPlaceable(mockActor);
+
+			Assert.IsTrue(mCell.TryGetActor(out IActor result, Faction.Red));
+		}
+
+		[Test]
+		public void TryGetActorWithFaction_ReturnsFalse_WhenActorOfOtherFactionAdded()
+		{
+			var mockActor = new MockActor(Faction.Red);
+			mCell.AddPlaceable(mockActor);
+
+			Assert.IsFalse(mCell.TryGetActor(out IActor result, Faction.Blue));
+		}
+
+		[Test]
+		public void TryGetActorWithFaction_ResultIsCorrect_WhenActorOfCorrectFactionAdded()
+		{
+			var mockActor = new MockActor(Faction.Red);
+			mCell.AddPlaceable(mockActor);
+
+			mCell.TryGetActor(out IActor result, Faction.Red);
+			Assert.AreEqual(mockActor, result);
+		}
+
+		[Test]
+		public void TryGetActorWithFaction_ResultIsNull_WhenActorOfOtherFactionAdded()
+		{
+			var mockActor = new MockActor(Faction.Red);
+			mCell.AddPlaceable(mockActor);
+
+			mCell.TryGetActor(out IActor result, Faction.Blue);
+			Assert.IsNull(result);
+		}
+
+		[Test]
 		public void RemovePlaceable_MakesHasPlaceableReturnFalse()
 		{
 			var mockPlaceable = new MockPlaceable();
@@ -337,7 +395,7 @@ namespace Tests
 
 			mCell.RemovePlaceable(mockPlaceable);
 
-			Assert.False(mCell.HasPlaceable());
+			Assert.IsFalse(mCell.HasPlaceable());
 		}
 
 		[Test]
@@ -349,7 +407,7 @@ namespace Tests
 
 			mCell.RemovePlaceable(mockPlaceable);
 
-			Assert.True(mCell.HasPlaceable());
+			Assert.IsTrue(mCell.HasPlaceable());
 		}
 
 		[Test]
@@ -359,7 +417,7 @@ namespace Tests
 
 			mCell.RemovePlaceable(new MockPlaceable());
 
-			Assert.True(mCell.HasPlaceable());
+			Assert.IsTrue(mCell.HasPlaceable());
 		}
 
 		[Test]

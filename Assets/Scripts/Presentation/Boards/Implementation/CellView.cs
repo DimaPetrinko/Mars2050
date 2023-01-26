@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Core.Configs;
 using Core.Configs.Implementation;
@@ -9,8 +10,11 @@ namespace Presentation.Boards.Implementation
 {
 	internal class CellView : MonoBehaviour, ICellView
 	{
+		public event Action Clicked;
+
 		[SerializeField] private StandingSpotHolder m_StandingSpotHolder;
 		[SerializeField] private GameConfig m_GameConfig;
+		[SerializeField] private ClickDetector mClickDetector;
 
 		public Transform DefaultStandingSpot => m_StandingSpotHolder.DefaultStandingSpot;
 
@@ -22,6 +26,11 @@ namespace Presentation.Boards.Implementation
 		}
 
 		private IGameConfig Config => m_GameConfig;
+
+		private void Awake()
+		{
+			mClickDetector.Clicked += OnClicked;
+		}
 
 		private void Start()
 		{
@@ -38,6 +47,11 @@ namespace Presentation.Boards.Implementation
 			var y = Config.CellRadius * position.y * f;
 
 			return new Vector3(x, 0, y);
+		}
+
+		private void OnClicked()
+		{
+			Clicked?.Invoke();
 		}
 
 #if UNITY_EDITOR

@@ -9,13 +9,13 @@ namespace Core.Services.GameProcess
 {
 	public interface IActionProcessor
 	{
-		ActionResult Move(
-			IPlayer performer,
-			ICell from,
-			ICell to,
-			ResourcePackage resourcesToUse,
-			int combinedHealth,
-			IMoveConfig config);
+		// ActionResult Move(
+		// 	IPlayer performer,
+		// 	ICell from,
+		// 	ICell to,
+		// 	ResourcePackage resourcesToUse,
+		// 	int combinedHealth,
+		// 	IMoveConfig config);
 
 		ActionResult Discover(
 			IPlayer performer,

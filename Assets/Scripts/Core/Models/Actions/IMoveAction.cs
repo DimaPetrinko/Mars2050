@@ -1,4 +1,5 @@
 using Core.Models.Boards;
+using Core.Models.Enums;
 
 namespace Core.Models.Actions
 {
@@ -6,5 +7,9 @@ namespace Core.Models.Actions
 	{
 		ICell From { set; }
 		ICell To { set; }
+
+		ActionResult CheckStartCell();
+		ActionResult CheckDestinationCell();
+		ActionResult CheckMoveRange();
 	}
 }

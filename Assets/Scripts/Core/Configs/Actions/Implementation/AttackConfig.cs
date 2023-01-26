@@ -17,12 +17,10 @@ namespace Core.Configs.Actions.Implementation
 		}
 
 		[Header("Attack")]
-		[SerializeField] private bool m_Repeatable;
 		[SerializeField] private double m_AttackRange;
 		[SerializeField] private RollDefinition[] m_RollDefinition;
 
 		public override ActionType Type => ActionType.Attack;
-		public bool Repeatable => m_Repeatable;
 		public double AttackRange => m_AttackRange;
 
 		public int GetDamageForRoll(int roll)

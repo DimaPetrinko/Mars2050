@@ -5,13 +5,11 @@ namespace Presentation.GameProcess
 {
 	internal interface IPlayerView : IView
 	{
-		event Action<ActionType> ActionClicked;
 		event Action EndTurnClicked;
 
 		bool Active { set; }
 		Faction Faction { set; }
-		int Oxygen { set; }
-		ActionType? SelectedAction { set; }
+		short Oxygen { set; }
 
 		void UpdateResource(ResourceType type, int amount);
 	}

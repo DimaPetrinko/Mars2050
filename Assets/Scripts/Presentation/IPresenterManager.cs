@@ -6,5 +6,6 @@ namespace Presentation
 	{
 		void Register(IModel model, IPresenter presenter);
 		IPresenter Get(IModel model);
+		void InitializeAll();
 	}
 }

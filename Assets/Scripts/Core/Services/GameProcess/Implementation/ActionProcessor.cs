@@ -19,46 +19,46 @@ namespace Core.Services.GameProcess.Implementation
 	{
 		private IFactory<IBuilding, Faction, IBuildingConfig> mBuildingFactory;
 
-		public ActionResult Move(
-			IPlayer performer,
-			ICell from,
-			ICell to,
-			ResourcePackage resourcesToUse,
-			int combinedHealth,
-			IMoveConfig config)
-		{
-			if (!EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
-			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
-			if (!from.TryGetActor(out IUnit movable, performer.Faction)) return ActionResult.NoUnitOfCorrectFactionInCell;
-			if (!config.CanMoveToOccupiedCell
-			    && to.HasPlaceable<IMovable>()
-			    && !to.HasPlaceable<IBaseBuilding>())
-				return ActionResult.CellIsOccupied;
-			if (!config.CanMoveToDamagedBuilding
-			    && to.TryGetPlaceable(out IBuilding building)
-			    && building.Health.Value < building.MaxHealth.Value)
-				return ActionResult.CellHasDamagedBuilding;
-			if ((from.Position - to.Position).magnitude > config.MoveRange) return ActionResult.ExceedsRange;
-			if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
-			var (toUse, _) = new ResourceProcessor().Process(resourcesToUse, config.Resources);
-			if (toUse.Amount == 0) return ActionResult.NoResourcesProvided;
-
-			ApplyAction(performer, config.Oxygen, toUse, () =>
-			{
-				from.RemovePlaceable(movable);
-				to.AddPlaceable(movable);
-
-				if (from.TryGetPlaceable(out IBuilding fromBuilding)) fromBuilding.RestoreMaxHealth();
-				if (to.TryGetPlaceable(out IBuilding toBuilding))
-				{
-					toBuilding.MaxHealth.Value = combinedHealth;
-					movable.MaxHealth.Value = combinedHealth;
-				}
-				else movable.RestoreMaxHealth();
-			});
-
-			return ActionResult.Success;
-		}
+		// public ActionResult Move(
+		// 	IPlayer performer,
+		// 	ICell from,
+		// 	ICell to,
+		// 	ResourcePackage resourcesToUse,
+		// 	int combinedHealth,
+		// 	IMoveConfig config)
+		// {
+		// 	if (!EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
+		// 	if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
+		// 	if (!from.TryGetActor(out IUnit movable, performer.Faction)) return ActionResult.NoMovableActorOfCorrectFactionInCell;
+		// 	if (!config.CanMoveToOccupiedCell
+		// 	    && to.HasPlaceable<IMovable>()
+		// 	    && !to.HasPlaceable<IBaseBuilding>())
+		// 		return ActionResult.CellIsOccupied;
+		// 	if (!config.CanMoveToDamagedBuilding
+		// 	    && to.TryGetPlaceable(out IBuilding building)
+		// 	    && building.Health.Value < building.MaxHealth.Value)
+		// 		return ActionResult.CellHasDamagedBuilding;
+		// 	if ((from.Position - to.Position).magnitude > config.MoveRange) return ActionResult.ExceedsRange;
+		// 	if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
+		// 	var (toUse, _) = new ResourceProcessor().Process(resourcesToUse, config.Resources);
+		// 	if (toUse.Amount == 0) return ActionResult.NoResourcesProvided;
+		//
+		// 	ApplyAction(performer, config.Oxygen, toUse, () =>
+		// 	{
+		// 		from.RemovePlaceable(movable);
+		// 		to.AddPlaceable(movable);
+		//
+		// 		if (from.TryGetPlaceable(out IBuilding fromBuilding)) fromBuilding.RestoreMaxHealth();
+		// 		if (to.TryGetPlaceable(out IBuilding toBuilding))
+		// 		{
+		// 			toBuilding.MaxHealth.Value = combinedHealth;
+		// 			movable.MaxHealth.Value = combinedHealth;
+		// 		}
+		// 		else movable.RestoreMaxHealth();
+		// 	});
+		//
+		// 	return ActionResult.Success;
+		// }
 
 		public ActionResult Discover(
 			IPlayer performer,
@@ -68,7 +68,7 @@ namespace Core.Services.GameProcess.Implementation
 		{
 			if (!EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
-			if (!cell.HasActor<IUnit>(performer.Faction)) return ActionResult.NoUnitOfCorrectFactionInCell;
+			if (!cell.HasActor<IUnit>(performer.Faction)) return ActionResult.NoMovableActorOfCorrectFactionInCell;
 			if (!cell.TryGetPlaceable(out IResource resource)) return ActionResult.NoResourceInCell;
 			if (resource.IsDiscovered.Value) return ActionResult.ResourceAlreadyDiscovered;
 			if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
@@ -124,8 +124,8 @@ namespace Core.Services.GameProcess.Implementation
 			var buildingConfig = config.BuildingConfigs.GetConfig(resource.Type);
 			var cost = config.Resources.Concat(buildingConfig.BuildCost);
 			if (!EnoughResources(performer, cost)) return ActionResult.NotEnoughResources;
-			if (!cell.HasActor<IUnit>(performer.Faction)) return ActionResult.NoUnitOfCorrectFactionInCell;
-			if (cell.HasActor<IBuilding>()) return ActionResult.CellIsOccupiedByBuilding;
+			if (!cell.HasActor<IUnit>(performer.Faction)) return ActionResult.NoMovableActorOfCorrectFactionInCell;
+			if (cell.HasActor<IBuilding>()) return ActionResult.CellIsOccupied;
 			if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
 			var resourceProcessor = new ResourceProcessor();
 			var (toUse, left) = resourceProcessor.Process(resourcesToUse, config.Resources);
@@ -154,9 +154,9 @@ namespace Core.Services.GameProcess.Implementation
 		{
 			if (!(repeat && config.Repeatable) && !EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
-			if (!from.HasActor<IUnit>(performer.Faction)) return ActionResult.NoUnitOfCorrectFactionInCell;
+			if (!from.HasActor<IUnit>(performer.Faction)) return ActionResult.NoMovableActorOfCorrectFactionInCell;
 			if (!to.TryGetActor(out IDamageable other) && ((IActor)other).Faction == performer.Faction)
-				return ActionResult.NoUnitOfCorrectFactionInCell;
+				return ActionResult.NoMovableActorOfCorrectFactionInCell;
 			if ((from.Position - to.Position).magnitude > config.AttackRange) return ActionResult.ExceedsRange;
 			if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
 			var (toUse, _) = new ResourceProcessor().Process(resourcesToUse, config.Resources);
@@ -180,7 +180,7 @@ namespace Core.Services.GameProcess.Implementation
 			if (!(repeat && config.Repeatable) && !EnoughOxygen(performer, config)) return ActionResult.NotEnoughOxygen;
 			if (!EnoughResources(performer, config.Resources)) return ActionResult.NotEnoughResources;
 			if (!cell.TryGetActor(out IDamageable damageable) && ((IActor)damageable).Faction != performer.Faction)
-				return ActionResult.NoUnitOfCorrectFactionInCell;
+				return ActionResult.NoMovableActorOfCorrectFactionInCell;
 			if (resourcesToUse.Amount == 0) return ActionResult.NoResourcesProvided;
 			var (toUse, _) = new ResourceProcessor().Process(resourcesToUse, config.Resources);
 			if (toUse.Amount == 0) return ActionResult.NoResourcesProvided;
@@ -253,7 +253,7 @@ namespace Core.Services.GameProcess.Implementation
 
 		private void ApplyAction(
 			IPlayer performer,
-			int oxygen,
+			byte oxygen,
 			ResourcePackage resourcesToUse,
 			Action applyAction)
 		{
