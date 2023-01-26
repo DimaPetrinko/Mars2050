@@ -37,6 +37,11 @@ namespace Presentation.Actions.Implementation
 			set => m_ResourcesInput.Resources = value;
 		}
 
+		public ResourcePackage MaxResources
+		{
+			set => m_ResourcesInput.MaxResource = value;
+		}
+
 		public bool CanConfirm
 		{
 			set => m_ConfirmButton.interactable = value;

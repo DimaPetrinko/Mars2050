@@ -25,6 +25,7 @@ namespace Core.Models.GameProcess.Implementation
 			remove => mResourceHolder.ResourceAmountChanged -= value;
 		}
 
+		public ResourcePackage Resources => mResourceHolder.Resources;
 		public int ResourcesAmount => mResourceHolder.ResourcesAmount;
 
 		public bool HasResource(ResourceType resource, int amount)

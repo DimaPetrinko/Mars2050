@@ -27,6 +27,18 @@ namespace Presentation.Actions.Implementation
 			}
 		}
 
+		public ResourcePackage MaxResource
+		{
+			set
+			{
+				foreach (var pair in mResourceInputs)
+				{
+					mResourceInputs[pair.Key].MaxValue =
+						value.Content.TryGetValue(pair.Key, out var maxValue) ? maxValue : 0;
+				}
+			}
+		}
+
 		public void ToggleInputs(bool value)
 		{
 			foreach (var input in mResourceInputs.Values) input.gameObject.SetActive(value);

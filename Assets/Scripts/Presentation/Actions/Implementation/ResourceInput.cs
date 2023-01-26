@@ -13,17 +13,24 @@ namespace Presentation.Actions.Implementation
 		[SerializeField] private TMP_Text m_TypeName;
 		[SerializeField] private TMP_InputField m_InputField;
 
+		private int mMaxValue;
+
 		public ResourceType Type => m_Type;
 
 		public int Value
 		{
 			get
 			{
-				if (int.TryParse(m_InputField.text, out var count)) return count;
-				Value = 0;
-				return 0;
+				if (int.TryParse(m_InputField.text, out var count)) count = Mathf.Clamp(count, 0, mMaxValue);
+				Value = count;
+				return count;
 			}
 			set => m_InputField.SetTextWithoutNotify(value.ToString());
+		}
+
+		public int MaxValue
+		{
+			set => mMaxValue = value;
 		}
 
 		private void Awake()

@@ -8,6 +8,7 @@ namespace Core.Models.GameProcess
 	{
 		event Action<ResourceType, int> ResourceAmountChanged;
 
+		ResourcePackage Resources { get; }
 		int ResourcesAmount { get; }
 
 		bool HasResource(ResourceType resource, int amount);

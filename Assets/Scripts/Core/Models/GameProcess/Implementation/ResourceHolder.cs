@@ -12,6 +12,7 @@ namespace Core.Models.GameProcess.Implementation
 		private readonly ResourcePackage mResources;
 
 		public int ResourcesAmount => mResources.Amount;
+		public ResourcePackage Resources => ResourcePackage.Copy(mResources);
 
 		public ResourceHolder()
 		{

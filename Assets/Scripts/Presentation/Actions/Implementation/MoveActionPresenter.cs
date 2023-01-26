@@ -50,6 +50,7 @@ namespace Presentation.Actions.Implementation
 			mCellSelectionState = CellSelectionState.Start;
 			mRepeat = false;
 			View.Resources = ResourcePackage.Empty();
+			View.MaxResources = Model.Performer?.Resources ?? ResourcePackage.Empty();
 		}
 
 		private void OnSelectedChanged(bool value)
@@ -127,7 +128,8 @@ namespace Presentation.Actions.Implementation
 						OnViewClosed();
 						break;
 					case ActionRepeatability.Continuable:
-						ResetData();
+						if (Model.CheckOxygen().IsSuccess()) ResetData();
+						else OnViewClosed();
 						break;
 				}
 			}

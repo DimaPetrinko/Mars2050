@@ -10,7 +10,7 @@ namespace Core.Models.Actions
 		IReactiveProperty<bool> Selected { get; }
 		ActionRepeatability Repeatability { get; }
 		bool ResourcesRequired { get; }
-		IPlayer Performer { set; }
+		IPlayer Performer { get; set; }
 		ResourcePackage Resources { set; }
 
 		ActionResult Perform(bool repeat);

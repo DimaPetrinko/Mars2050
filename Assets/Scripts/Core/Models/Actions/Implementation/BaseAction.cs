@@ -27,7 +27,7 @@ namespace Core.Models.Actions.Implementation
 
 		public IPlayer Performer
 		{
-			protected get { return mPerformer; }
+			get => mPerformer;
 			set
 			{
 				mPerformer = value;

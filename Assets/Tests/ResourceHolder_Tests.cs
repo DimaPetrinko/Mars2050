@@ -24,6 +24,28 @@ namespace Tests
 		}
 
 		[Test]
+		public void Resources_ReturnsAllAddedResources()
+		{
+			mResourceHolder.AddResources(new ResourcePackage(ResourceType.Ore, 2));
+			mResourceHolder.AddResources(new ResourcePackage(ResourceType.Electricity, 1));
+
+			Assert.AreEqual(2, mResourceHolder.Resources.Content[ResourceType.Ore]);
+			Assert.AreEqual(1, mResourceHolder.Resources.Content[ResourceType.Electricity]);
+			Assert.IsFalse(mResourceHolder.Resources.Content.ContainsKey(ResourceType.Plants));
+			Assert.IsFalse(mResourceHolder.Resources.Content.ContainsKey(ResourceType.Water));
+		}
+
+		[Test]
+		public void Resources_DoesNotChangeHolderResources()
+		{
+			mResourceHolder.AddResources(new ResourcePackage(ResourceType.Ore, 2));
+
+			mResourceHolder.Resources.Content[ResourceType.Ore] = 5;
+
+			Assert.AreEqual(2, mResourceHolder.Resources.Content[ResourceType.Ore]);
+		}
+
+		[Test]
 		public void AddResources_ChangesAmount()
 		{
 			mResourceHolder.AddResources(new ResourcePackage(ResourceType.Electricity, 10));

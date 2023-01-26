@@ -13,6 +13,7 @@ namespace Presentation.Actions
 		bool Active { set; }
 		ActionResult Result { set; }
 		ResourcePackage Resources { get; set; }
+		ResourcePackage MaxResources { set; }
 		bool CanConfirm { set; }
 		bool ResourcesRequired { set; }
 	}
