@@ -128,7 +128,7 @@ namespace Presentation.Actions.Implementation
 						OnViewClosed();
 						break;
 					case ActionRepeatability.Continuable:
-						if (Model.CheckOxygen().IsSuccess()) ResetData();
+						if (Model.CheckOxygen().IsSuccess() && Model.CheckPerformerResources().IsSuccess()) ResetData();
 						else OnViewClosed();
 						break;
 				}
