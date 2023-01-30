@@ -1,11 +1,15 @@
 using System;
+using UnityEngine;
 
 namespace Core.Models.Boards
 {
 	public interface IPlaceable : IModel
 	{
-		event Action<ICell> CellChanged;
+		event Action<IPlaceable> NeighborAdded;
+		event Action<IPlaceable> NeighborRemoved;
 
-		void ChangeCell(ICell cell);
+		IReactiveProperty<Vector2Int> Position { get; }
+		void OnNewNeighbor(IPlaceable neighbor);
+		void OnNeighborRemoved(IPlaceable neighbor);
 	}
 }

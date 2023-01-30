@@ -1,6 +1,5 @@
 using System.Linq;
 using Core.Models.Actors;
-using Core.Models.Boards;
 using Core.Models.Enums;
 using Presentation.Boards;
 using UnityEngine;
@@ -22,7 +21,7 @@ namespace Presentation.Actors.Implementation
 			View = view;
 			mBoardPresenter = boardPresenter;
 
-			Model.CellChanged += OnCellChanged;
+			Model.Position.Changed += OnPositionChanged;
 			Model.Faction.Changed += OnFactionChanged;
 			Model.Health.Changed += OnHealthChanged;
 			Model.MaxHealth.Changed += OnMaxHealthChanged;
@@ -30,18 +29,18 @@ namespace Presentation.Actors.Implementation
 
 		public void Initialize()
 		{
+			OnPositionChanged(Model.Position.Value);
 			OnMaxHealthChanged(Model.MaxHealth.Value);
 			OnHealthChanged(Model.Health.Value);
 			OnFactionChanged(Model.Faction.Value);
 
-			View.Cell = null;
 			View.Type = Model.ResourceType;
 		}
 
-		private void OnCellChanged(ICell cell)
+		private void OnPositionChanged(Vector2Int position)
 		{
 			// TODO: building factory triggers an event. game presenter is subbed to it and occupies the resource
-			View.Cell = mBoardPresenter.GetCellSpot(cell);
+			View.Cell = mBoardPresenter.GetCellSpot(position);
 		}
 
 		private void OnFactionChanged(Faction value)

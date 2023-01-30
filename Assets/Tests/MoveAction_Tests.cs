@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Core;
 using Core.Configs.Actions;
+using Core.Implementation;
 using Core.Models.Actions;
 using Core.Models.Actions.Implementation;
 using Core.Models.Actors;
@@ -11,6 +13,7 @@ using Core.Models.Enums;
 using Core.Models.GameProcess.Implementation;
 using Core.Utils;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Tests
 {
@@ -20,8 +23,14 @@ namespace Tests
 
 		private class MockMovable : IMovable
 		{
-			public event Action<ICell> CellChanged;
-			public void ChangeCell(ICell cell)
+			public event Action<IPlaceable> NeighborAdded;
+			public event Action<IPlaceable> NeighborRemoved;
+			public IReactiveProperty<Vector2Int> Position { get; } = new ReactiveProperty<Vector2Int>();
+			public void OnNewNeighbor(IPlaceable neighbor)
+			{
+			}
+
+			public void OnNeighborRemoved(IPlaceable neighbor)
 			{
 			}
 		}
@@ -32,12 +41,18 @@ namespace Tests
 			{
 				Faction = faction;
 			}
-			public event Action<ICell> CellChanged;
-			public void ChangeCell(ICell cell)
+
+			public Faction Faction { get; }
+			public event Action<IPlaceable> NeighborAdded;
+			public event Action<IPlaceable> NeighborRemoved;
+			public IReactiveProperty<Vector2Int> Position { get; } = new ReactiveProperty<Vector2Int>();
+			public void OnNewNeighbor(IPlaceable neighbor)
 			{
 			}
 
-			public Faction Faction { get; }
+			public void OnNeighborRemoved(IPlaceable neighbor)
+			{
+			}
 		}
 
 		private class MockMoveConfig : IMoveConfig
@@ -215,8 +230,7 @@ namespace Tests
 		}
 
 		[Test]
-		public void
-			MoveAction_ReturnsCellIsOccupied_WhenCannotMoveToOccupiedCellAndCellIsOccupiedByBaseBuildingOfOtherFaction()
+		public void MoveAction_ReturnsCellIsOccupied_WhenCannotMoveToOccupiedCellAndCellIsOccupiedByBaseBuildingOfOtherFaction()
 		{
 			var config = new MockMoveConfig
 			{
@@ -238,8 +252,7 @@ namespace Tests
 		}
 
 		[Test]
-		public void
-			MoveAction_ReturnsCellIsOccupied_WhenCannotMoveToOccupiedCellAndCellIsOccupiedByBuildingOfOtherFaction()
+		public void MoveAction_ReturnsCellIsOccupied_WhenCannotMoveToOccupiedCellAndCellIsOccupiedByBuildingOfOtherFaction()
 		{
 			var config = new MockMoveConfig
 			{
@@ -506,6 +519,38 @@ namespace Tests
 			Assert.AreEqual(ActionResult.Success, moveAction.Perform(false));
 			Assert.AreEqual(6, unit.Health.Value);
 			Assert.AreEqual(6, building.Health.Value);
+		}
+
+		[Test]
+		public void MoveAction_RestoresHealth_WhenDamageableMovedFromCellWithBuilding()
+		{
+			var config = new MockMoveConfig
+			{
+				Resources = new ResourceCostData[]
+					{ },
+				CanMoveToOccupiedCell = true,
+				CanMoveToDamagedBuilding = true,
+				MoveRange = 1,
+			};
+			IMoveAction moveAction = new MoveAction(config, 6);
+			moveAction.Performer = new Player(Faction.Red);
+			moveAction.Selected.Value = true;
+			var from = new Cell(0, 0);
+			var unit = new Unit(Faction.Red, 3);
+			from.AddPlaceable(unit);
+			var to = new Cell(1, 0);
+			var building = new Building(Faction.Red, ResourceType.Ore, 4);
+			to.AddPlaceable(building);
+			moveAction.From = from;
+			moveAction.To = to;
+			moveAction.Perform(false);
+
+			moveAction.From = to;
+			moveAction.To = new Cell(2, 0);
+
+			Assert.AreEqual(ActionResult.Success, moveAction.Perform(false));
+			Assert.AreEqual(3, unit.Health.Value);
+			Assert.AreEqual(4, building.Health.Value);
 		}
 
 		[Test]

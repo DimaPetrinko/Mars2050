@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Core.Models.Actors;
 using Core.Models.Boards;
 using UnityEngine;
 
@@ -38,17 +39,19 @@ namespace Presentation.Boards.Implementation
 			}
 		}
 
-		public Transform GetCellSpot(ICell cell, bool defaultSpot = true)
+		public Transform GetCellSpot(Vector2Int position, bool defaultSpot = true)
 		{
+			var cell = Model.GetCell(position);
 			if (cell == null) return null;
 			var cellPresenter = GetCellPresenter(cell);
 			if (cellPresenter == null) return null;
 			return defaultSpot ? cellPresenter.View.DefaultStandingSpot : cellPresenter.Spot;
 		}
 
-		public Transform GetCellSpot(Vector2Int position, bool defaultSpot = true)
+		public bool CellHasBuilding(Vector2Int position)
 		{
-			return GetCellSpot(Model.GetCell(position), defaultSpot);
+			var cell = Model.GetCell(position);
+			return cell?.HasPlaceable<IBuilding>() ?? false;
 		}
 
 		private ICellPresenter GetCellPresenter(ICell cell)

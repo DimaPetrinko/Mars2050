@@ -2,6 +2,7 @@ using System;
 using Core.Implementation;
 using Core.Models.Boards;
 using Core.Models.Enums;
+using UnityEngine;
 
 namespace Core.Models.Actors.Implementation
 {
@@ -25,15 +26,28 @@ namespace Core.Models.Actors.Implementation
 
 		private readonly IPlaceable mPlaceable;
 
-		public event Action<ICell> CellChanged
+		public event Action<IPlaceable> NeighborAdded
 		{
-			add => mPlaceable.CellChanged += value;
-			remove => mPlaceable.CellChanged -= value;
+			add => mPlaceable.NeighborAdded += value;
+			remove => mPlaceable.NeighborAdded -= value;
 		}
 
-		public void ChangeCell(ICell cell)
+		public event Action<IPlaceable> NeighborRemoved
 		{
-			mPlaceable.ChangeCell(cell);
+			add => mPlaceable.NeighborRemoved += value;
+			remove => mPlaceable.NeighborRemoved -= value;
+		}
+
+		public IReactiveProperty<Vector2Int> Position => mPlaceable.Position;
+
+		public void OnNewNeighbor(IPlaceable neighbor)
+		{
+			mPlaceable.OnNewNeighbor(neighbor);
+		}
+
+		public void OnNeighborRemoved(IPlaceable neighbor)
+		{
+			mPlaceable.OnNeighborRemoved(neighbor);
 		}
 
 		#endregion

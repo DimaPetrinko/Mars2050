@@ -8,7 +8,7 @@ namespace Presentation.Boards
 	{
 		event Action<ICell> CellClicked;
 
-		Transform GetCellSpot(ICell cell, bool defaultSpot = true);
 		Transform GetCellSpot(Vector2Int position, bool defaultSpot = true);
+		bool CellHasBuilding(Vector2Int position);
 	}
 }

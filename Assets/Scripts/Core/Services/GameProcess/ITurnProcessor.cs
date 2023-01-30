@@ -7,6 +7,6 @@ namespace Core.Services.GameProcess
 	{
 		IEnumerable<ITurnPerformer> TurnPerformers { get; }
 
-		int Roll();
+		IDice Dice { get; }
 	}
 }

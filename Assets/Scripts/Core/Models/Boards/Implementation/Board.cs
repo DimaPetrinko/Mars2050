@@ -36,6 +36,7 @@ namespace Core.Models.Boards.Implementation
 				return mCells[position.x + offset, position.y + offset];
 			else
 			{
+				// TODO: turn into ILogger to allow testing without unity
 				Debug.LogWarning($"Invalid position {position}");
 				return null;
 			}

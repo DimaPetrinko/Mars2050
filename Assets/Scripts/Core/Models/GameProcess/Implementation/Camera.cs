@@ -7,9 +7,11 @@ namespace Core.Models.GameProcess.Implementation
 {
 	public class Camera : ICamera
 	{
+		private readonly float mMoveRadius;
+
 		public Camera(float moveRadius, Range<float> zoomLimits)
 		{
-			MoveRadius = moveRadius;
+			mMoveRadius = moveRadius;
 			ZoomLimits = zoomLimits;
 
 			Position = new ReactiveProperty<Vector2>(Vector2.zero, PositionSetter);
@@ -18,12 +20,11 @@ namespace Core.Models.GameProcess.Implementation
 
 		public IReactiveProperty<Vector2> Position { get; }
 		public IReactiveProperty<float> Zoom { get; }
-		public float MoveRadius { get; }
 		public Range<float> ZoomLimits { get; }
 
 		private void PositionSetter(Vector2 value, Vector2 currentValue, Action<Vector2> setValue, Action triggerChanged)
 		{
-			value = Vector2.ClampMagnitude(value, MoveRadius);
+			value = Vector2.ClampMagnitude(value, mMoveRadius);
 			setValue(value);
 			if (value != currentValue) triggerChanged();
 		}

@@ -51,6 +51,11 @@ namespace Presentation
 			{
 				return null;
 			}
+
+			public bool CellHasBuilding(Vector2Int position)
+			{
+				return false;
+			}
 		}
 
 		[SerializeField] private GameConfig m_GameConfig;

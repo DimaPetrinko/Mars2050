@@ -106,9 +106,9 @@ namespace Presentation
 						.Magnitude())
 					.FirstOrDefault();
 				if (cell == null) continue;
-				pair.Value.CellChanged += BuildingCellChanged;
+				pair.Value.Position.Changed += BuildingCellChanged;
 				cell.AddPlaceable(pair.Value);
-				pair.Value.CellChanged -= BuildingCellChanged;
+				pair.Value.Position.Changed -= BuildingCellChanged;
 			}
 
 			var faction = Faction.Red;
@@ -125,8 +125,10 @@ namespace Presentation
 			baseCell.RemovePlaceable(unit);
 			buildingCell.AddPlaceable(unit);
 
-			void BuildingCellChanged(ICell cell)
+			void BuildingCellChanged(Vector2Int position)
 			{
+				var cell = mBoard.GetCell(position);
+				if (cell == null) return;
 				var resource = cell.GetPlaceable<IResource>();
 				var resourcePresenter = mResources.FirstOrDefault(p => p.Model == resource);
 				if (resourcePresenter != null) resourcePresenter.IsOccupied = true;
@@ -207,7 +209,6 @@ namespace Presentation
 					presenter.Initialize();
 					mPresenterProvider.Register(unit, presenter);
 					mUnits.Add(presenter, faction);
-					presenter.Selected += OnUnitSelected;
 				}
 			}
 		}
@@ -230,14 +231,6 @@ namespace Presentation
 			presenter.Initialize();
 			mPresenterProvider.Register(building, presenter);
 			mBuildings.Add(type, building);
-		}
-
-		private void OnUnitSelected(IUnitPresenter unit)
-		{
-			foreach (var u in mUnits.Keys)
-			{
-				u.IsSelected = unit == u;
-			}
 		}
 	}
 }

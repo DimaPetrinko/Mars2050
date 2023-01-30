@@ -6,6 +6,7 @@ using Core.Models.Actors.Implementation;
 using Core.Models.Boards;
 using Core.Models.Enums;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Tests
 {
@@ -16,14 +17,20 @@ namespace Tests
 
 		private class MockResource : IResource
 		{
-			public event Action<ICell> CellChanged;
-			public void ChangeCell(ICell cell)
-			{
-			}
 
 			public IReactiveProperty<bool> IsOccupied { get; } = new ReactiveProperty<bool>();
 			public IReactiveProperty<bool> IsDiscovered { get; }
 			public ResourceType Type { get; }
+			public event Action<IPlaceable> NeighborAdded;
+			public event Action<IPlaceable> NeighborRemoved;
+			public IReactiveProperty<Vector2Int> Position { get; }
+			public void OnNewNeighbor(IPlaceable neighbor)
+			{
+			}
+
+			public void OnNeighborRemoved(IPlaceable neighbor)
+			{
+			}
 		}
 
 		#endregion

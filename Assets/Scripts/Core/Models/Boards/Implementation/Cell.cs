@@ -12,6 +12,8 @@ namespace Core.Models.Boards.Implementation
 		public event Action<IPlaceable> PlaceableAdded;
 		public event Action<IPlaceable> PlaceableRemoved;
 
+		private static readonly Vector2Int InvalidPosition = Vector2Int.one * int.MaxValue;
+
 		private readonly List<IPlaceable> mPlaceables = new();
 
 		public Vector2Int Position { get; }
@@ -76,15 +78,17 @@ namespace Core.Models.Boards.Implementation
 
 		public void AddPlaceable(IPlaceable placeable)
 		{
+			foreach (var p in mPlaceables) p.OnNewNeighbor(placeable);
 			mPlaceables.Add(placeable);
-			placeable.ChangeCell(this);
+			placeable.Position.Value = Position;
 			PlaceableAdded?.Invoke(placeable);
 		}
 
 		public void RemovePlaceable(IPlaceable placeable)
 		{
 			mPlaceables.Remove(placeable);
-			placeable.ChangeCell(null);
+			foreach (var p in mPlaceables) p.OnNeighborRemoved(placeable);
+			placeable.Position.Value = InvalidPosition;
 			PlaceableRemoved?.Invoke(placeable);
 		}
 	}

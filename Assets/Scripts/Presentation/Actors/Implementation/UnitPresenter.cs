@@ -1,25 +1,17 @@
-using System;
 using Core.Models.Actors;
 using Core.Models.Boards;
 using Presentation.Boards;
+using UnityEngine;
 
 namespace Presentation.Actors.Implementation
 {
 	internal class UnitPresenter : IUnitPresenter
 	{
-		public event Action<IUnitPresenter> Selected;
-
 		private readonly IBoardPresenter mBoardPresenter;
-
-		private ICell mCell;
+		private Vector2Int mPosition;
 
 		public IUnit Model { get; }
 		public IUnitView View { get; }
-
-		public bool IsSelected
-		{
-			set => View.IsSelected = value;
-		}
 
 		public UnitPresenter(IUnit model, IUnitView view, IBoardPresenter boardPresenter)
 		{
@@ -27,11 +19,11 @@ namespace Presentation.Actors.Implementation
 			Model = model;
 			View = view;
 
-			Model.CellChanged += OnCellChanged;
+			Model.Position.Changed += OnPositionChanged;
+			Model.NeighborAdded += OnNeighborAddedOrRemoved;
+			Model.NeighborRemoved += OnNeighborAddedOrRemoved;
 			Model.Health.Changed += OnHealthChanged;
 			Model.MaxHealth.Changed += OnMaxHealthChanged;
-
-			View.Selected += OnSelected;
 		}
 
 		public void Initialize()
@@ -40,44 +32,21 @@ namespace Presentation.Actors.Implementation
 			OnMaxHealthChanged(Model.MaxHealth.Value);
 
 			View.Faction = Model.Faction;
-			OnCellChanged(null);
-			IsSelected = false;
+			OnPositionChanged(Model.Position.Value);
 		}
 
-		private void OnCellChanged(ICell cell)
+		private void OnPositionChanged(Vector2Int position)
 		{
-			if (mCell != null)
-			{
-				mCell.PlaceableAdded -= OnPlaceableAddedOrRemoved;
-				mCell.PlaceableRemoved -= OnPlaceableAddedOrRemoved;
-			}
-
-			mCell = cell;
-
-			if (mCell != null)
-			{
-				View.HealthBarShown = !mCell.HasPlaceable<IBuilding>();
-				UpdateSpot();
-				mCell.PlaceableAdded += OnPlaceableAddedOrRemoved;
-				mCell.PlaceableRemoved += OnPlaceableAddedOrRemoved;
-			}
-			else
-			{
-				View.Cell = null;
-			}
-
-			void OnPlaceableAddedOrRemoved(IPlaceable placeable)
-			{
-				var cellHasBuilding = mCell.HasPlaceable<IBuilding>();
-				View.HealthBarShown = !cellHasBuilding;
-				if (cellHasBuilding) UpdateSpot();
-			}
+			mPosition = position;
+			View.HealthBarShown = !mBoardPresenter.CellHasBuilding(mPosition);
+			View.Cell = mBoardPresenter.GetCellSpot(mPosition, false);
 		}
 
-		private void UpdateSpot()
+		private void OnNeighborAddedOrRemoved(IPlaceable neighbor)
 		{
-			var spot = mBoardPresenter.GetCellSpot(mCell, false);
-			View.Cell = spot;
+			var cellHasBuilding = neighbor is IBuilding;
+			View.HealthBarShown = !cellHasBuilding;
+			if (cellHasBuilding) View.Cell = mBoardPresenter.GetCellSpot(mPosition, false);
 		}
 
 		private void OnHealthChanged(int value)
@@ -88,11 +57,6 @@ namespace Presentation.Actors.Implementation
 		private void OnMaxHealthChanged(int value)
 		{
 			View.MaxHealth = value;
-		}
-
-		private void OnSelected()
-		{
-			Selected?.Invoke(this);
 		}
 	}
 }

@@ -14,7 +14,7 @@ namespace Presentation.Boards.Implementation
 
 		[SerializeField] private StandingSpotHolder m_StandingSpotHolder;
 		[SerializeField] private GameConfig m_GameConfig;
-		[SerializeField] private ClickDetector mClickDetector;
+		[SerializeField] private ClickDetector m_ClickDetector;
 
 		public Transform DefaultStandingSpot => m_StandingSpotHolder.DefaultStandingSpot;
 
@@ -29,7 +29,7 @@ namespace Presentation.Boards.Implementation
 
 		private void Awake()
 		{
-			mClickDetector.Clicked += OnClicked;
+			m_ClickDetector.Clicked += OnClicked;
 		}
 
 		private void Start()

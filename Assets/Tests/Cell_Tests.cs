@@ -1,5 +1,6 @@
 using System;
 using Core;
+using Core.Implementation;
 using Core.Models.Actors;
 using Core.Models.Boards;
 using Core.Models.Boards.Implementation;
@@ -15,37 +16,49 @@ namespace Tests
 
 		private class MockPlaceable : IPlaceable
 		{
-			public event Action<ICell> CellChanged;
-
-			public void ChangeCell(ICell cell)
+			public event Action<IPlaceable> NeighborAdded;
+			public event Action<IPlaceable> NeighborRemoved;
+			public IReactiveProperty<Vector2Int> Position { get; } = new ReactiveProperty<Vector2Int>();
+			public void OnNewNeighbor(IPlaceable neighbor)
 			{
-				CellChanged?.Invoke(cell);
+				NeighborAdded?.Invoke(neighbor);
+			}
+
+			public void OnNeighborRemoved(IPlaceable neighbor)
+			{
+				NeighborRemoved?.Invoke(neighbor);
 			}
 		}
 
-		private class MockActor : IActor
+		private interface IMockPlaceableActor : IActor, IPlaceable
 		{
-			public event Action<ICell> CellChanged;
+		}
+		private class MockActor : IMockPlaceableActor
+		{
+			public event Action<IPlaceable> NeighborAdded;
+			public event Action<IPlaceable> NeighborRemoved;
 
 			public Faction Faction { get; }
+			public IReactiveProperty<Vector2Int> Position { get; } = new ReactiveProperty<Vector2Int>();
 
 			public MockActor(Faction faction = Faction.Blue)
 			{
 				Faction = faction;
 			}
 
-			public void ChangeCell(ICell cell)
+			public void OnNewNeighbor(IPlaceable neighbor)
 			{
-				CellChanged?.Invoke(cell);
+				NeighborAdded?.Invoke(neighbor);
+			}
+
+			public void OnNeighborRemoved(IPlaceable neighbor)
+			{
+				NeighborRemoved?.Invoke(neighbor);
 			}
 		}
 
 		private class MockUnit : IUnit
 		{
-			public event Action<ICell> CellChanged;
-			public void ChangeCell(ICell cell)
-			{
-			}
 
 			public Faction Faction { get; }
 			public event Action Died;
@@ -61,6 +74,20 @@ namespace Tests
 
 			public void RestoreMaxHealth()
 			{
+			}
+
+			public event Action<IPlaceable> NeighborAdded;
+			public event Action<IPlaceable> NeighborRemoved;
+			public IReactiveProperty<Vector2Int> Position { get; } = new ReactiveProperty<Vector2Int>();
+
+			public void OnNewNeighbor(IPlaceable neighbor)
+			{
+				NeighborAdded?.Invoke(neighbor);
+			}
+
+			public void OnNeighborRemoved(IPlaceable neighbor)
+			{
+				NeighborRemoved?.Invoke(neighbor);
 			}
 		}
 
@@ -103,7 +130,7 @@ namespace Tests
 		{
 			mCell.AddPlaceable(new MockActor());
 
-			Assert.IsTrue(mCell.HasPlaceable<IActor>());
+			Assert.IsTrue(mCell.HasPlaceable<IMockPlaceableActor>());
 		}
 
 		[Test]
@@ -421,50 +448,26 @@ namespace Tests
 		}
 
 		[Test]
-		public void AddPlaceable_TriggersCellChanged_OnAddedPlaceable()
+		public void AddPlaceable_ChangesPosition_OnAddedPlaceable()
 		{
-			var triggered = false;
-
+			var position = new Vector2Int(4, 5);
+			ICell cell = new Cell(position);
 			var placeable = new MockPlaceable();
-			placeable.CellChanged += _ => triggered = true;
-			mCell.AddPlaceable(placeable);
+			cell.AddPlaceable(placeable);
 
-			Assert.IsTrue(triggered);
-		}
-
-		[Test]
-		public void RemovePlaceable_TriggersCellChanged_OnRemovedPlaceable()
-		{
-			var triggered = false;
-
-			var placeable = new MockPlaceable();
-			placeable.CellChanged += _ => triggered = true;
-			mCell.RemovePlaceable(placeable);
-
-			Assert.IsTrue(triggered);
-		}
-
-		[Test]
-		public void AddPlaceable_TriggersCellChangedWithCorrectCell_OnAddedPlaceable()
-		{
-			ICell cell = null;
-			var placeable = new MockPlaceable();
-			placeable.CellChanged += changedCell => cell = changedCell;
-			mCell.AddPlaceable(placeable);
-
-			Assert.AreEqual(mCell, cell);
+			Assert.AreEqual(cell.Position, placeable.Position.Value);
 		}
 
 		[Test]
 		public void RemovePlaceable_TriggersCellChangedWithNullCell_OnRemovedPlaceable()
 		{
-			var cell = mCell;
-
+			var position = new Vector2Int(4, 5);
+			ICell cell = new Cell(position);
 			var placeable = new MockPlaceable();
-			placeable.CellChanged += changedCell => cell = changedCell;
-			mCell.RemovePlaceable(placeable);
+			cell.AddPlaceable(placeable);
+			cell.RemovePlaceable(placeable);
 
-			Assert.IsNull(cell);
+			Assert.AreNotEqual(cell.Position, placeable.Position.Value);
 		}
 
 		[Test]
@@ -514,6 +517,100 @@ namespace Tests
 			mCell.RemovePlaceable(placeable);
 
 			Assert.AreEqual(placeable, removedPlaceable);
+		}
+
+		[Test]
+		public void OnNewNeighbor_IsTriggered_OnOthersWhenAddingPlaceable()
+		{
+			var placeable1 = new MockPlaceable();
+			var placeable2 = new MockPlaceable();
+			var placeable3 = new MockPlaceable();
+
+			var triggered1 = false;
+			var triggered2 = false;
+			var triggered3 = false;
+
+			mCell.AddPlaceable(placeable1);
+			mCell.AddPlaceable(placeable2);
+			placeable1.NeighborAdded += _ => triggered1 = true;
+			placeable2.NeighborAdded += _ => triggered2 = true;
+			placeable3.NeighborAdded += _ => triggered3 = true;
+			mCell.AddPlaceable(placeable3);
+
+			Assert.IsTrue(triggered1);
+			Assert.IsTrue(triggered2);
+			Assert.IsFalse(triggered3);
+		}
+
+		[Test]
+		public void OnNewNeighbor_IsTriggeredWithCorrectValue_OnOthersWhenAddingPlaceable()
+		{
+			var placeable1 = new MockPlaceable();
+			var placeable2 = new MockPlaceable();
+			var placeable3 = new MockPlaceable();
+
+			IPlaceable receivedPlaceable1 = null;
+			IPlaceable receivedPlaceable2 = null;
+			IPlaceable receivedPlaceable3 = null;
+
+			mCell.AddPlaceable(placeable1);
+			mCell.AddPlaceable(placeable2);
+			placeable1.NeighborAdded += neighbor => receivedPlaceable1 = neighbor;
+			placeable2.NeighborAdded += neighbor => receivedPlaceable2 = neighbor;
+			placeable3.NeighborAdded += neighbor => receivedPlaceable3 = neighbor;
+			mCell.AddPlaceable(placeable3);
+
+			Assert.AreEqual(placeable3, receivedPlaceable1);
+			Assert.AreEqual(placeable3, receivedPlaceable2);
+			Assert.IsNull(receivedPlaceable3);
+		}
+
+		[Test]
+		public void OnNeighborRemoved_IsTriggered_OnOthersWhenRemovingPlaceable()
+		{
+			var placeable1 = new MockPlaceable();
+			var placeable2 = new MockPlaceable();
+			var placeable3 = new MockPlaceable();
+
+			var triggered1 = false;
+			var triggered2 = false;
+			var triggered3 = false;
+
+			mCell.AddPlaceable(placeable1);
+			mCell.AddPlaceable(placeable2);
+			mCell.AddPlaceable(placeable3);
+			placeable1.NeighborRemoved += _ => triggered1 = true;
+			placeable2.NeighborRemoved += _ => triggered2 = true;
+			placeable3.NeighborRemoved += _ => triggered3 = true;
+			mCell.RemovePlaceable(placeable3);
+
+			Assert.IsTrue(triggered1);
+			Assert.IsTrue(triggered2);
+			Assert.IsFalse(triggered3);
+		}
+
+		[Test]
+		public void OnNeighborRemoved_IsTriggeredWithCorrectValue_OnOthersWhenRemovingPlaceable()
+		{
+			var placeable1 = new MockPlaceable();
+			var placeable2 = new MockPlaceable();
+			var placeable3 = new MockPlaceable();
+
+			IPlaceable receivedPlaceable1 = null;
+			IPlaceable receivedPlaceable2 = null;
+			IPlaceable receivedPlaceable3 = null;
+
+			mCell.AddPlaceable(placeable1);
+			mCell.AddPlaceable(placeable2);
+			mCell.AddPlaceable(placeable3);
+			placeable1.NeighborRemoved += neighbor => receivedPlaceable1 = neighbor;
+			placeable2.NeighborRemoved += neighbor => receivedPlaceable2 = neighbor;
+			placeable3.NeighborRemoved += neighbor => receivedPlaceable3 = neighbor;
+			mCell.RemovePlaceable(placeable3);
+
+			Assert.AreEqual(placeable3, receivedPlaceable1);
+			Assert.AreEqual(placeable3, receivedPlaceable2);
+			Assert.IsNull(receivedPlaceable3);
 		}
 	}
 }

@@ -1,6 +1,5 @@
 using System.Linq;
 using Core.Models.Actors;
-using Core.Models.Boards;
 using Presentation.Boards;
 using UnityEngine;
 
@@ -26,22 +25,22 @@ namespace Presentation.Actors.Implementation
 			View = view;
 			mBoardPresenter = boardPresenter;
 
-			Model.CellChanged += OnCellChanged;
+			Model.Position.Changed += OnPositionChanged;
 			Model.IsDiscovered.Changed += OnIsDiscoveredChanged;
 			View.Discovered += OnDiscovered;
 		}
 
 		public void Initialize()
 		{
+			OnPositionChanged(Model.Position.Value);
 			OnIsDiscoveredChanged(Model.IsDiscovered.Value);
 
 			View.Type = Model.Type;
-			View.Cell = null;
 		}
 
-		private void OnCellChanged(ICell cell)
+		private void OnPositionChanged(Vector2Int position)
 		{
-			View.Cell = cell != null ? mBoardPresenter.GetCellSpot(cell) : null;
+			View.Cell = mBoardPresenter.GetCellSpot(position);
 		}
 
 		private void OnDiscovered(bool value)

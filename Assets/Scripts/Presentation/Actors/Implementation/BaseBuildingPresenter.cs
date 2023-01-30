@@ -1,6 +1,5 @@
 using System.Linq;
 using Core.Models.Actors;
-using Core.Models.Boards;
 using Presentation.Boards;
 using UnityEngine;
 
@@ -21,18 +20,18 @@ namespace Presentation.Actors.Implementation
 			View = view;
 			mBoardPresenter = boardPresenter;
 
-			Model.CellChanged += OnCellChanged;
+			Model.Position.Changed += OnPositionChanged;
 		}
 
 		public void Initialize()
 		{
+			OnPositionChanged(Model.Position.Value);
 			View.Faction = Model.Faction;
-			View.Cell = null;
 		}
 
-		private void OnCellChanged(ICell cell)
+		private void OnPositionChanged(Vector2Int position)
 		{
-			View.Cell = mBoardPresenter.GetCellSpot(cell);
+			View.Cell = mBoardPresenter.GetCellSpot(position);
 			View.UpdateRotation(mBoardPresenter.GetCellSpot(Vector2Int.zero).position);
 		}
 	}

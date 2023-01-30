@@ -7,7 +7,6 @@ namespace Core.Models.GameProcess
 	{
 		IReactiveProperty<Vector2> Position { get; }
 		IReactiveProperty<float> Zoom { get; }
-		float MoveRadius { get; }
 		Range<float> ZoomLimits { get; }
 	}
 }
