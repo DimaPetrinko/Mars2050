@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2680205790986508872, guid: d92911ace298acf46917106a55169682, type: 3}
       propertyPath: m_Name
-      value: MoveActionView
+      value: DiscoverActionView
       objectReference: {fileID: 0}
     - target: {fileID: 3048617182787202407, guid: d92911ace298acf46917106a55169682, type: 3}
       propertyPath: m_AnchorMax.y
@@ -146,14 +146,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2680205790986508872, guid: d92911ace298acf46917106a55169682, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1445621970589336182}
+      addedObject: {fileID: 4855906214278601943}
   m_SourcePrefab: {fileID: 100100000, guid: d92911ace298acf46917106a55169682, type: 3}
 --- !u!1 &1359193341984659770 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2680205790986508872, guid: d92911ace298acf46917106a55169682, type: 3}
   m_PrefabInstance: {fileID: 4030391623402668914}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1445621970589336182
+--- !u!114 &4855906214278601943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1359193341984659770}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c19592229a3f4dc084f7499da96c2284, type: 3}
+  m_Script: {fileID: 11500000, guid: 82e2381e08bf4997a90fb9f45c10e93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ConfirmButton: {fileID: 1496290486680130464}

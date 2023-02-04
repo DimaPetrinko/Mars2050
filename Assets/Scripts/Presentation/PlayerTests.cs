@@ -63,6 +63,7 @@ namespace Presentation
 		[SerializeField] private PlayerView[] m_PlayerViews;
 		[SerializeField] private ActionButtonView[] m_ActionButtonViews;
 		[SerializeField] private MoveActionView m_MoveActionView;
+		[SerializeField] private DiscoverActionView m_DiscoverActionView;
 		[SerializeField] private DiceView m_DiceView;
 		[SerializeField] private Vector2Int m_FromCell;
 		[SerializeField] private Vector2Int m_ToCell;
@@ -117,7 +118,10 @@ namespace Presentation
 			mActions = new IAction[actionTypes.Length];
 			for (var i = 0; i < mActions.Length; i++)
 			{
-				var model = actionFactory.Create(ActionType.Move);
+				var actionType = actionTypes[i] == ActionType.Move || actionTypes[i] == ActionType.Discover
+					? actionTypes[i]
+					: ActionType.Move;
+				var model = actionFactory.Create(actionType);
 				var view = m_ActionButtonViews[i];
 				view.name = $"{actionTypes[i]} button";
 				if (model == null)
@@ -144,6 +148,12 @@ namespace Presentation
 				m_MoveActionView,
 				mFakeBoardPresenter);
 			mPresenterManager.Register((IMoveAction)mActions[0], moveActionPresenter);
+
+			var discoverActionPresenter = new DiscoverActionPresenter(
+				(IDiscoverAction)mActions[1],
+				m_DiscoverActionView,
+				mFakeBoardPresenter);
+			mPresenterManager.Register((IDiscoverAction)mActions[1], discoverActionPresenter);
 		}
 
 		private void Start()
@@ -187,6 +197,14 @@ namespace Presentation
 			if (Input.GetKeyDown(KeyCode.T))
 			{
 				mFakeBoardPresenter.ClickOnCell(new Cell(m_ToCell));
+			}
+
+			if (Input.GetKeyDown(KeyCode.R))
+			{
+				var cell = new Cell(0, 0);
+				cell.AddPlaceable(new Unit(mPlayers[mCurrentPlayer].Faction, m_GameConfig.MaxUnitHealth));
+				cell.AddPlaceable(new Resource(ResourceType.Ore));
+				mFakeBoardPresenter.ClickOnCell(cell);
 			}
 		}
 

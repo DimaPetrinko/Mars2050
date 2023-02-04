@@ -27,7 +27,7 @@ namespace Core.Models.Actions.Implementation
 			return type switch
 			{
 				ActionType.Move => new MoveAction((IMoveConfig)config, mGameConfig.MaxBuildingWithUnitHealth),
-				// ActionType.Discover => new DiscoverAction(performer, config),
+				ActionType.Discover => new DiscoverAction((IDiscoverConfig)config),
 				// ActionType.Gather => new GatherAction(performer, config, mDice),
 				// ActionType.Build => new BuildAction(performer, config),
 				// ActionType.Attack => new AttackAction(performer, config, mDice),

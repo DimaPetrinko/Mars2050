@@ -28,7 +28,6 @@ namespace Core.Models.Actions.Implementation
 				CheckStartCell,
 				CheckDestinationCell,
 				CheckMoveRange,
-				CheckProvidedResources
 			});
 		}
 

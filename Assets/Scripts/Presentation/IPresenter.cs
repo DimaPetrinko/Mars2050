@@ -7,7 +7,10 @@ namespace Presentation
 		void Initialize();
 	}
 
-	internal interface IPresenter<out TModel, out TView> : IPresenter where TModel : IModel where TView : IView
+	internal interface IPresenter<out TModel, out TView>
+		: IPresenter
+		where TModel : class, IModel
+		where TView : class, IView
 	{
 		TModel Model { get; }
 		TView View { get; }

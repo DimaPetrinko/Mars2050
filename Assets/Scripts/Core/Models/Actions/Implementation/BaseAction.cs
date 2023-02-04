@@ -47,7 +47,8 @@ namespace Core.Models.Actions.Implementation
 				CheckPerformerSet,
 				CheckIfSelected,
 				CheckOxygen,
-				CheckPerformerResources
+				CheckPerformerResources,
+				CheckProvidedResources
 			};
 		}
 

@@ -1,6 +1,6 @@
 namespace Core.Models.Actors
 {
-	public interface IUnit : IActor, IMovable, IDamageable, IResourceGatherer
+	public interface IUnit : IActor, IMovable, IDamageable, IResourceDiscoverer, IResourceGatherer
 	{
 	}
 }

@@ -6,7 +6,9 @@ using Presentation.Boards;
 
 namespace Presentation.Actions.Implementation
 {
-	internal class MoveActionPresenter : IMoveActionPresenter
+	internal class MoveActionPresenter
+		: SimpleActionPresenter<IMoveAction, IMoveActionView>,
+			IMoveActionPresenter
 	{
 		private enum CellSelectionState
 		{
@@ -18,45 +20,15 @@ namespace Presentation.Actions.Implementation
 		private readonly IBoardPresenter mBoardPresenter;
 
 		private CellSelectionState mCellSelectionState;
-		private bool mRepeat;
 
-		public IMoveAction Model { get; }
-		public IMoveActionView View { get; }
-
-		public MoveActionPresenter(IMoveAction model, IMoveActionView view, IBoardPresenter boardPresenter)
+		public MoveActionPresenter(
+			IMoveAction model,
+			IMoveActionView view,
+			IBoardPresenter boardPresenter
+		) : base(model, view)
 		{
-			Model = model;
-			View = view;
-
-			Model.Selected.Changed += OnSelectedChanged;
-			View.Confirmed += OnActionConfirmed;
-			View.Closed += OnViewClosed;
-			View.ResourcesChanged += OnResourcesChanged;
-
 			mBoardPresenter = boardPresenter;
 			mBoardPresenter.CellClicked += OnCellClicked;
-		}
-
-		public void Initialize()
-		{
-			OnSelectedChanged(Model.Selected.Value);
-			View.ResourcesRequired = Model.ResourcesRequired;
-		}
-
-		private void ResetData()
-		{
-			View.CanConfirm = false;
-			View.Result = ActionResult.Success;
-			mCellSelectionState = CellSelectionState.Start;
-			mRepeat = false;
-			View.Resources = ResourcePackage.Empty();
-			View.MaxResources = Model.Performer?.Resources ?? ResourcePackage.Empty();
-		}
-
-		private void OnSelectedChanged(bool value)
-		{
-			View.Active = value;
-			ResetData();
 		}
 
 		private void OnCellClicked(ICell cell)
@@ -70,7 +42,6 @@ namespace Presentation.Actions.Implementation
 					View.Result = result;
 					if (result.IsSuccess())
 					{
-						Model.From = cell;
 						mCellSelectionState++;
 					}
 
@@ -109,35 +80,10 @@ namespace Presentation.Actions.Implementation
 			View.CanConfirm = mCellSelectionState == CellSelectionState.Both;
 		}
 
-		private void OnResourcesChanged()
+		protected override void ResetData()
 		{
-			Model.Resources = View.Resources;
-		}
-
-		private void OnActionConfirmed()
-		{
-			var result = Model.Perform(mRepeat);
-
-			if (!result.IsSuccess()) View.Result = result;
-			else
-			{
-				mRepeat = true;
-				switch (Model.Repeatability)
-				{
-					case ActionRepeatability.None:
-						OnViewClosed();
-						break;
-					case ActionRepeatability.Continuable:
-						if (Model.CheckOxygen().IsSuccess() && Model.CheckPerformerResources().IsSuccess()) ResetData();
-						else OnViewClosed();
-						break;
-				}
-			}
-		}
-
-		private void OnViewClosed()
-		{
-			Model.Selected.Value = false;
+			base.ResetData();
+			mCellSelectionState = CellSelectionState.Start;
 		}
 	}
 }
